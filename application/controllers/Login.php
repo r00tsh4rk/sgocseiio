@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-
+//Añadiendo librerias URL y FORM_ VALIDATION
 		$this->load->helper('url');
 		$this->load->library('form_validation');
 		$this->clear_cache();
