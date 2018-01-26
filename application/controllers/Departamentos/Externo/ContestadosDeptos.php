@@ -12,7 +12,7 @@ class ContestadosDeptos extends CI_Controller {
 	public function index()
 	{
 		if ($this->session->userdata('nombre')) {
-		$data['titulo'] = 'Pendientes';
+		$data['titulo'] = 'Contestados';
 		$data['contestados'] = $this -> Modelo_departamentos-> getAllContestados($this->session->userdata('id_area'));
 		$data['infodepto'] = $this -> Modelo_departamentos-> getInfoDepartamento($this->session->userdata('id_area'));
 		$this->load->view('plantilla/header', $data);

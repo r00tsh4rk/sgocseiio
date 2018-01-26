@@ -28,23 +28,23 @@
                 </li>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                  <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li class="active">
-                        <a href="<?php echo base_url(); ?>Login/salir"><i class="fa fa-fw fa-dashboard"></i> Inicio</a>
+                     <li class="active">
+                        <a href="<?php echo base_url(); ?>Admin/PanelAdmin"><i class="fa fa-desktop"></i> Inicio</a>
+                    </li>
+                    <li >
+                        <a href="<?php echo base_url(); ?>Admin/Empleados/PanelEmpleados"><i class="fa fa-users"></i> Gestión de Empleados</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-arrow-right"></i> Administración de Entradas</a>
+                        <a href="<?php echo base_url(); ?>Admin/Usuarios/PanelUsuarios"><i class="fa fa-user"></i> Gestión Usuarios de Sistema</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-arrow-left"></i> Administración de Respuestas</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-fw fa-edit"></i> Cerrar Sesión</a>
+                        <a href="<?php echo base_url(); ?>Admin/Accesos/PanelAccesos"><i class="fa fa-unlock-alt"></i> Control de Accesos</a>
                     </li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
+            <!-- /.n /.navbar-collapse -->
         </nav>
 
         <div id="page-wrapper">
@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">26</div>
-                                        <div>Total de Oficios</div>
+                                        <div>Total de Empleados Registrados</div>
                                     </div>
                                 </div>
                             </div>
@@ -89,6 +89,7 @@
                             </a>
                         </div>
                     </div>
+
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-green">
                             <div class="panel-heading">
@@ -98,7 +99,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">12</div>
-                                        <div>Buzón de entradas</div>
+                                        <div>Total de Usuarios con Acceso al Sistema</div>
                                     </div>
                                 </div>
                             </div>
@@ -111,6 +112,7 @@
                             </a>
                         </div>
                     </div>
+
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
@@ -120,7 +122,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">3</div>
-                                        <div>Respuestas Realizadas</div>
+                                        <div>Total de accesos registrados al sistema</div>
                                     </div>
                                 </div>
                             </div>
@@ -133,6 +135,7 @@
                             </a>
                         </div>
                     </div>
+
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <div class="panel-heading">
@@ -142,7 +145,32 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">13</div>
-                                        <div>Pendientes por responder</div>
+                                        <div>Total de oficios registrados en el proceso Externo</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Más Información</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+                  <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-yellow">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-support fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">13</div>
+                                        <div>Total de oficios registrados en el proceso Interno</div>
                                     </div>
                                 </div>
                             </div>

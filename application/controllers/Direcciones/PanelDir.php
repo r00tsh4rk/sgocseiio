@@ -22,7 +22,7 @@ class PanelDir extends CI_Controller {
 			$data['fueratiempoext'] = $this->Modelo_direccion->fuera_de_tiempoExt($this->session->userdata('id_direccion'));
 		// // Proceso Interno
 			$data['conteoTotalint'] = $this->Modelo_direccion->conteo_totalInt($this->session->userdata('id_direccion'));
-			$data['emitidosint'] = $this->Modelo_direccion->emitidosInt($this->session->userdata('id_direccion'));
+			$data['emitidosint'] = $this->Modelo_direccion->emitidosInt($this->session->userdata('nombre'));
 			$data['contestadosint'] = $this->Modelo_direccion->contestadosInt($this->session->userdata('id_direccion'));
 			$data['pendientesint'] = $this->Modelo_direccion->pendientesInt($this->session->userdata('id_direccion'));
 			$data['nocontestadosint'] = $this->Modelo_direccion->nocontestadosInt($this->session->userdata('id_direccion'));

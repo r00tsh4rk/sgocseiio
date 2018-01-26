@@ -6,7 +6,7 @@ class PanelAdmin extends CI_Controller {
 	public function index()
 	{
 		if ($this->session->userdata('nombre')) {
-			$data['titulo'] = 'Calendario Escolar';
+			$data['titulo'] = 'Administrador Inicio';
 			$this->load->view('plantilla/header', $data);
 			$this->load->view('admin/index');
 			$this->load->view('plantilla/footer');

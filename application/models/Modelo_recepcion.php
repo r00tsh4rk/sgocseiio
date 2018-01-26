@@ -51,6 +51,15 @@ class Modelo_recepcion extends CI_Model {
 		return $consulta -> result();
 	}
 
+	public function obtenerCorreos($id_direccion)
+	{
+		$this->db->select('email,email_personal');
+		$this->db->from('empleados');
+		$where = "direccion='".$id_direccion."' AND isDir = '1'";
+		$this->db->where($where, NULL, FALSE);	
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
 
    public function obtenerCorreo($id_recpecion)
 	{
@@ -59,6 +68,17 @@ class Modelo_recepcion extends CI_Model {
 		$this->db->join('empleados', 'recepcion_oficios.direccion_destino = empleados.direccion');
 		$where = "recepcion_oficios.id_recepcion='".$id_recpecion."' AND isDir = '1'";
 		$this->db->where($where, NULL, FALSE);	
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
+	public function obtenerCorreosPorDepartamento($id_area)
+	{
+		$this->db->select('email,email_personal');
+		$this->db->from('empleados');
+		$where = "departamento='".$id_area."'";
+		$this->db->where($where, NULL, FALSE);
+		$this->db->limit(1);	
 		$consulta = $this->db->get();
 		return $consulta -> result();
 	}
@@ -134,14 +154,12 @@ class Modelo_recepcion extends CI_Model {
 
 
 
-		function getAllPendientes()
+	function getAllPendientes()
 	{
 		$this->db->select('*');
 		$this->db->from('recepcion_oficios');
 		$this->db->join('direcciones', 'recepcion_oficios.direccion_destino = direcciones.id_direccion');
 		$this->db->join('departamentos', 'departamentos.direccion = direcciones.id_direccion');
-			
-			// agregar el join con asignaciones
 		$where = "recepcion_oficios.status = 'Pendiente' OR recepcion_oficios.status = 'No Contestado'";
 		$this->db->where($where, NULL, FALSE);	
 		$this->db->group_by('recepcion_oficios.id_recepcion');
@@ -149,7 +167,7 @@ class Modelo_recepcion extends CI_Model {
 		return $consulta -> result();
 	}
 
-	function getAsignacionById($id_recepcion)
+	 function getAsignacionById($id_recepcion)
 	{
 		$this->db->select('departamentos.nombre_area');
 		$this->db->from('recepcion_oficios');
@@ -169,11 +187,8 @@ class Modelo_recepcion extends CI_Model {
 			  $this->db->join('codigos_archivisticos', 'respuesta_oficios.codigo_archivistico = codigos_archivisticos.id_codigo');
 			$this->db->join('direcciones', 'recepcion_oficios.direccion_destino = direcciones.id_direccion');
 			$this->db->join('departamentos', 'departamentos.direccion = direcciones.id_direccion');
-
 			$where = "recepcion_oficios.status = 'Contestado'";
-
 			$this->db->where($where, NULL, FALSE);	
-
 			//$this->db->where('recepcion_oficios.status', 'Contestado');
 			$this->db->group_by('recepcion_oficios.id_recepcion');
 			$consulta = $this->db->get();
@@ -380,6 +395,7 @@ class Modelo_recepcion extends CI_Model {
     public function contestados()
     {
         $this->db->where('status','Contestado');
+        $this->db->where('requiereRespuesta', 1);
         return $this->db->count_all_results('recepcion_oficios');
     }
 
@@ -405,6 +421,12 @@ class Modelo_recepcion extends CI_Model {
     {
         return $this->db->count_all_results('oficios_salida');
     }
+
+    function total_informativos()
+	{
+		$this->db->where('direccion_destino',8);
+        return $this->db->count_all_results('recepcion_oficios');
+	}
 
     public function agregarRespuesta($num_oficio,$fecha_respuesta,$hora_respuesta,$asunto,$tipo_recepcion, $tipo_documento, $oficio_salida, $emisor, $cargo, $dependencia, $receptor, $respuesta, $anexos, $id_oficio_recepcion, $codigo_archivistico)
     {

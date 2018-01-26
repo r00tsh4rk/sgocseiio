@@ -24,6 +24,19 @@ class Modelo_reportes extends CI_Model {
 		return $consulta -> result();
 	}
 
+	public function getAllOficiosInformativos($inicio, $final)
+	{
+		$this->db->select('*');
+		$this->db->select('recepcion_oficios.emisor as emisor_externo, recepcion_oficios.cargo as cargo_externo, recepcion_oficios.dependencia_emite as dependencia_externo');
+		$this->db->from('recepcion_oficios');
+		$this->db->join('direcciones', 'direccion_destino = id_direccion');
+		$where = "fecha_recepcion BETWEEN '".$inicio."' AND '".$final."' AND direccion_destino = '8'";
+		$this->db->where($where, NULL, FALSE);	
+		$this->db->order_by('recepcion_oficios.fecha_recepcion', 'desc');
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
 	public function getAllOficiosExternosByID($id_recepcion)
 	{
 		$this->db->select('*');
@@ -716,6 +729,29 @@ class Modelo_reportes extends CI_Model {
 		$consulta = $this->db->get();
 		return $consulta -> result();
 	}
+
+	//Obtener los oficios informativos (Aquellos que no poseen respuesta.)
+    function getAllInformativosSalida()
+	{
+			$this->db->select('*');
+			$this->db->from('oficios_salida');
+			$this->db->join('codigos_archivisticos', 'codigo_archivistico = id_codigo');
+			$this->db->where('tieneRespuesta', 0);
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
+
+	// public function getAllRespuestasASalidas()
+	// {
+	// 	$this->db->select('*');
+	// 	$this->db->from('oficios_salida');
+	// 	$this->db->join('codigos_archivisticos', 'oficios_salida.codigo_archivistico = codigos_archivisticos.id_codigo');
+	// 	$this->db->join('respuesta_oficios_salida', 'oficios_salida.id_oficio_salida = respuesta_oficios_salida.oficio_emision');
+
+	// 	$consulta = $this->db->get();
+	// 		return $consulta -> result();
+	// }
+
 
 
 }

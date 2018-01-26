@@ -329,7 +329,7 @@
                 ?>        
             </td>
             <td>
-                <button type="button" onclick="EditarOficio('<?php echo $row->id_recepcion_int; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->tipo_recepcion; ?>','<?php echo $row->tipo_documento; ?>','<?php echo $row->emisor; ?>','<?php echo $row->direccion_destino; ?>','<?php echo $row->fecha_termino; ?>','<?php echo $row->status; ?>','<?php echo $row->prioridad; ?>','<?php echo $row->observaciones; ?>');" class="form-control btn btn-danger btn-sm">
+                <button type="button" onclick="EditarOficio('<?php echo $row->id_recepcion_int; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->tipo_recepcion; ?>','<?php echo $row->tipo_documento; ?>','<?php echo $row->emisor; ?>','<?php echo $row->direccion_destino; ?>','<?php echo $row->fecha_termino; ?>','<?php echo $row->status; ?>','<?php echo $row->prioridad; ?>','<?php echo addcslashes($row->observaciones,"\\\"\"\n\r"); ?>');" class="form-control btn btn-danger btn-sm">
                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar 
                </button>
            </td>
@@ -603,8 +603,8 @@
         <div class="form-group">
             <label>Tipo de días para termino</label>
             <select class="form-control" name="tipo_dias_a">
-                <option value="0">Días Naturales</option>
                 <option value="1">Días Hábiles</option>
+                <option value="0">Días Naturales</option>
             </select>
         </div>
 
@@ -634,10 +634,12 @@
             </select>
         </div>
 
+
         <div class="form-group">
-            <label>Observaciones</label>
-            <input name="observaciones_a" class="form-control" placeholder="Ej. Se recibe oficio sin sello de la dependencia"  required>
-        </div>
+         <label>Observaciones</label>
+         <textarea name="observaciones_a" class="form-control" placeholder="Ej. Se recibe oficio sin sello de la dependencia" >    
+         </textarea>
+     </div> 
 
         <button name="btn_enviar_a" type="submit" class="btn btn-info">
           <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Registrar Información

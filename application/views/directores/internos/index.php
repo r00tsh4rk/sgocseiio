@@ -401,16 +401,8 @@
                          <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Responder 
                      </button>
                  </td> 
-
-                <?php } if ($row->flag_deptos == 1) {  ?>
-
-                <td>
-                    <button type="button"  onclick="mostrarModaldeAsignacion('<?php echo $row->id_recepcion_int; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->emisor; ?>');" class="form-control btn btn-danger btn-sm" disabled>
-                     <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Asignar 
-                 </button>
-             </td>
-                
-               <?php } elseif ($row->respondido == 1 && $row->flag_deptos == 0) { ?>
+                <?php }  ?>
+            <?php if ($row->respondido == 1 && $row->flag_deptos == 0) { ?>
 
                <td>
                 <?php echo "Oficio respondido por la Dirección"; ?>
@@ -422,14 +414,17 @@
                     <?php echo "Esta dirección no tiene Departamentos"; ?>
              </td>
 
-               <?php } else { ?>
+               <?php } elseif($row->esOfCentrales == 0) { ?>
 
                 <td>
+                    <?php echo "Esta dirección no tiene Departamentos"; ?>
+             </td>
+             <?php } else { ?>
+                    <td>
                     <button type="button"  onclick="mostrarModaldeAsignacion('<?php echo $row->id_recepcion_int; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->emisor; ?>');" class="form-control btn btn-danger btn-sm">
                      <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Asignar 
                  </button>
              </td>
-
              <?php } ?>
            </tr>
            <?php } ?>

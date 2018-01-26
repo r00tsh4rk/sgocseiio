@@ -506,7 +506,7 @@ class RecepcionDeptos extends CI_Controller {
 
 					if($agregar)
 					{ 	
-									// Aqui se enviaria el correo para notificar al usuario correspondiente
+					// Aqui se enviaria el correo para notificar al usuario correspondiente
 					// tomando los datos de sesion del emisor y os datos del recpetor del oficio 
 					 //cargamos la libreria email de ci
     						$this->load->library("email");

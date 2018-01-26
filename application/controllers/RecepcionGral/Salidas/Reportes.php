@@ -221,6 +221,132 @@ class Reportes extends CI_Controller {
 
 
 }
+// Informativos - salida
+public function reporteOficiosInformativos()
+{
+
+    $this->load->library('Excel');
+    $objPHPExcel = new PHPExcel();
+
+    date_default_timezone_set('America/Mexico_City');
+    $time = time();
+    $hoy = date("d-m-Y H:i:s", $time);
+        //$hoy = date("F j, Y, g:i a");
+
+    $inicio = $this->input->post('date_inicio');
+    $final = $this->input->post('date_final');
+
+        // DIBUJANDO EL LOGO DEL CSEIIO
+    $objDrawing = new PHPExcel_Worksheet_Drawing();
+    $objDrawing->setName('Logo');
+    $objDrawing->setDescription('Logo');
+    $objDrawing->setPath('./assets/img/apple-touch-icon.png');
+
+    $objDrawing->setCoordinates('A1');
+    $objDrawing->setHeight(100);
+    $objDrawing->setWidth(100);
+    $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+
+
+        // DIBUJANDO EL LOGO DEL GOBIERNO DEL ESTADO
+    $objDrawingGob = new PHPExcel_Worksheet_Drawing();
+    $objDrawingGob->setName('LogoGob');
+    $objDrawingGob->setDescription('Logo');
+    $objDrawingGob->setPath('./assets/img/GobOaxacaLogo.png');
+
+    $objDrawingGob->setCoordinates('O1');
+    $objDrawingGob->setHeight(1000);
+    $objDrawingGob->setWidth(306);
+    $objDrawingGob->setWorksheet($objPHPExcel->getActiveSheet());
+
+    $objPHPExcel->getProperties()->setCreator("CSEIIO")
+    ->setLastModifiedBy("CSEIIO")
+    ->setTitle("Reporte del Total de Oficios Informativos-Modalidad Externa")
+    ->setSubject("Reporte de Oficialia")
+    ->setDescription("Reporte que contiene el total de oficios informativos recibidos por Unidad de Correspondencia del CSEIIO, Modalidad Externa.")
+    ->setKeywords("cseiio reporte oficios oficialia externos")
+    ->setCategory("Reporte");
+
+    $tituloReporte = "Reporte de oficios informativos, capturados por la Unidad, comprendido del periodo:  ".$inicio."  al ".$final."";
+    $tituloCseiio = "Colegio Superior Para la Educación Integral e Intercultural de Oaxaca";
+    $titulosColumnas = array('NÚMERO DE OFICIO', 'CÓDIGO ARCHIVISTICO', 'FECHA DE EMISIÓN', 'HORA DE EMISIÓN', 'ASUNTO', 'TIPO DE EMISIÓN','TIPO DE DOCUMENTO','EMISOR PRINCIPAL','CARGO','FUNCIONARIO QUE REALIZÓ EL OFICIO','CARGO','REMITENTE','CARGO DEL REMITENTE','DEPENDENCIA DEL REMITENTE','OBSERVACIONES');
+
+        // Se combinan las celdas A1 hasta F1, para colocar ahí el titulo del reporte
+    $objPHPExcel->setActiveSheetIndex(0)
+    ->mergeCells('A1:O1');
+// Se agregan los titulos del reporte
+    $objPHPExcel->setActiveSheetIndex(0)
+    ->setCellValue('I3',  $tituloReporte) // Titulo del Reporte
+    ->setCellValue('I4',  $tituloCseiio) // Titulo del Colegio
+    ->setCellValue('A6',  $titulosColumnas[0])  //Titulo de las columnas
+    ->setCellValue('B6',  $titulosColumnas[1])
+    ->setCellValue('C6',  $titulosColumnas[2])
+    ->setCellValue('D6',  $titulosColumnas[3])
+    ->setCellValue('E6',  $titulosColumnas[4])
+    ->setCellValue('F6',  $titulosColumnas[5])
+    ->setCellValue('G6',  $titulosColumnas[6])
+    ->setCellValue('H6',  $titulosColumnas[7])
+    ->setCellValue('I6',  $titulosColumnas[8])
+    ->setCellValue('J6',  $titulosColumnas[9])
+    ->setCellValue('K6',  $titulosColumnas[10])
+    ->setCellValue('L6',  $titulosColumnas[11])
+    ->setCellValue('M6',  $titulosColumnas[12])
+    ->setCellValue('N6',  $titulosColumnas[13])
+    ->setCellValue('O6',  $titulosColumnas[14]);
+
+
+    $objPHPExcel->getActiveSheet()->getStyle('A6:O6')->getFill()
+    ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+    ->getStartColor()->setRGB('579A8D');
+
+        //ENTRADAS
+      // $dato2 = $this->modelo_reportes->entradas($inicio,$final);
+       // $dato = $this->modelo_reportes-> conteoAsistencias($inicio,$final);
+
+    $oficios = $this->Modelo_reportes->getAllInformativosSalida($inicio, $final);
+
+    $i = 7;
+    $j = 7;
+        //Obteniendo todos los ID´s de enmpleados
+    foreach($oficios as $fila)
+    {
+            $objPHPExcel->setActiveSheetIndex(0)
+            ->setCellValue('A'.$i, $fila->num_oficio)
+            ->setCellValue('B'.$i, $fila->codigo)
+            ->setCellValue('C'.$i, $fila->fecha_emision)
+            ->setCellValue('D'.$i, $fila->hora_emision)
+            ->setCellValue('E'.$i, $fila->asunto)
+            ->setCellValue('F'.$i, $fila->tipo_emision)
+            ->setCellValue('G'.$i, $fila->tipo_documento)
+            ->setCellValue('H'.$i, $fila->titular)
+            ->setCellValue('I'.$i, $fila->dependencia)
+            ->setCellValue('J'.$i, $fila->quien_realiza_oficio)
+            ->setCellValue('K'.$i, $fila->cargo)
+            ->setCellValue('L'.$i, $fila->remitente)
+            ->setCellValue('M'.$i, $fila->cargo_remitente)
+            ->setCellValue('N'.$i, $fila->observaciones)
+            ->setCellValue('O'.$i, $fila->dependencia_remitente);
+
+     //Contador de celdas
+            $i++;
+
+        }
+
+           // Se asigna el nombre a la hoja
+        $objPHPExcel->getActiveSheet()->setTitle('Oficios Informativos Salientes');
+
+        $objPHPExcel->setActiveSheetIndex(0);
+
+
+            // Se manda el archivo al navegador web, con el nombre que se indica, en formato 2007
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Reporte_de_oficios_SALIENTESINFORMATIVOS:'.$hoy.'.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+        exit;
+    }
 
 }
 

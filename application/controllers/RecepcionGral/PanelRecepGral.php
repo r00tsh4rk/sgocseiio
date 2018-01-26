@@ -19,6 +19,7 @@ class PanelRecepGral extends CI_Controller {
 			$data['nocontestados'] = $this->Modelo_recepcion->nocontestados();
 			$data['fueratiempo'] = $this->Modelo_recepcion->fuera_de_tiempo();
 			$data['totalsalientes'] = $this->Modelo_recepcion->total_salientes();
+			$data['totalinformativos'] = $this->Modelo_recepcion->total_informativos();
 			//Para consultar los oficios asignados por día, se realiza la consulta pasando como parametro la fecha actual del servidor configurado con el date_time de Mexico, de tal manera que realice la consulta de los oficios recibidos en el día que arroje el date_time()
 			//FECHA
 			date_default_timezone_set('America/Mexico_City');

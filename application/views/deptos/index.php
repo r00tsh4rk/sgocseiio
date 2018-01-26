@@ -92,6 +92,7 @@
                             </a>
                         </div>
                     </div>
+
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <div class="panel-heading">
@@ -105,7 +106,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="<?php echo base_url(); ?>Departamentos/Externo/NoContestadosDeptos>
+                            <a href="<?php echo base_url(); ?>Departamentos/Externo/NoContestadosDeptos">
                                 <div class="panel-footer">
                                     <span class="pull-left">Más Información</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -113,7 +114,8 @@
                                 </div>
                             </a>
                         </div>
-                
+                    </div>
+
             
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-green">

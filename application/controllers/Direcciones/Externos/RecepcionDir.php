@@ -467,7 +467,9 @@ class RecepcionDir extends CI_Controller {
 
 			$habilitar = $this->Modelo_direccion->cambiarBanderaHabilitado($id_oficio_recepcion);
 
+
 			if ($habilitar) {
+				$asignar = $this->Modelo_direccion->cambiarBanderaAsignacion($id_oficio_recepcion);
 				$this->session->set_flashdata('exito', 'El oficio asignado por la Unidad Central de Correspondencia, se ha sido habilitado para ser respondido por el departamento.');
     						redirect(base_url() . 'Direcciones/Externos/RecepcionDir/');
 			}

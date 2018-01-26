@@ -13,7 +13,7 @@ class ContestadosFueraTiempo extends CI_Controller {
 	public function index()
 	{
 		if ($this->session->userdata('nombre')) {
-		$data['titulo'] = 'Pendientes';
+		$data['titulo'] = 'Contestados Fuera de Tiempo';
 		$data['fueratiempo'] = $this -> Modelo_recepcion -> getAllFueraTiempo();
 		$this->load->view('plantilla/header', $data);
 		$this->load->view('recepcion/entradas/fueradetiempo');

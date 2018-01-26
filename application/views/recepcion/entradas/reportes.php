@@ -113,6 +113,7 @@
               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales3">Oficios Contestados Fuera del Rango Tiempo</a></li>
               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales4">Oficios Pendientes dentro del Rango de Tiempo</a></li>
               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales5">Oficios No Contestados en el Tiempo de Respuesta</a></li>
+              <li style="color: #B7156D;"><a data-toggle="tab" href="#generales6">Oficios Informativos Capturados por la Unidad</a></li>
             </ul>
 
             <div class="tab-content">
@@ -277,6 +278,40 @@
               </form>
 
             </div>
+
+
+               <div id="generales6" class="tab-pane fade">
+
+              <h3>Oficios Informativos Capturados por la Unidad</h3>
+              <br>
+              <h4>Genera el reporte de los oficios informativos que se han capturados por la Unidad</h4>
+
+              <br>
+
+              <form class="form-horizontal" role="form" method="POST" action="<?php echo base_url(); ?>RecepcionGral/Entradas/Reportes/reporteInformativosExternos">
+                <p style="color: #EF4444; font-weight: bold;">*Seleccione el periodo de fechas en el que desee conocer el total de oficios no contestados</p>
+                <div class="form-group">
+                  <label for="fecha_inicio" class="col-lg-2 control-label">Fecha de Inicio:</label>
+                  <div class="col-lg-6">
+                    <input type="date" class="form-control" id="date_inicio" name="date_inicio"  value="<?php echo date('Y-m-d') ?>"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="fecha_fin" class="col-lg-2 control-label">Fecha de Fin:</label>
+                  <div class="col-lg-6">
+                    <input type="date" class="form-control" id="date_final" name="date_final" value="<?php echo date('Y-m-d') ?>"/>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-lg-offset-2 col-lg-6">
+                    <button type="submit" class="btn btn-success">Imprimir Reporte</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+
           </div>
         </div>
         <!-- REPORTES POR DIRECCIONES -->

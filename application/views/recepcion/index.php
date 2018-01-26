@@ -96,7 +96,7 @@ foreach ($contestadosDatos as $row) {
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/Pendientes">
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Entradas/Pendientes">
                         <div class="panel-footer">
                             <span class="pull-left">Más Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -113,12 +113,12 @@ foreach ($contestadosDatos as $row) {
                                 <i class="fa fa-times-circle fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge"><?php echo $nocontestados; ?></div>
+                                <div class="huge"><?php echo $pendientes+$nocontestados; ?></div>
                                 <div>No Contestados</div>
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/NoContestados">
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Entradas/NoContestados">
                         <div class="panel-footer">
                             <span class="pull-left">Más Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -142,7 +142,7 @@ foreach ($contestadosDatos as $row) {
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/Contestados">
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Entradas/Contestados">
                         <div class="panel-footer">
                             <span class="pull-left">Más Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -166,7 +166,7 @@ foreach ($contestadosDatos as $row) {
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/ContestadosFueraTiempo">
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Entradas/ContestadosFueraTiempo">
                         <div class="panel-footer">
                             <span class="pull-left">Más Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -180,7 +180,7 @@ foreach ($contestadosDatos as $row) {
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-comments fa-5x"></i>
+                                <i class="fa fa-plus-circle fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge"><?php echo $conteoTotal; ?></div>
@@ -188,7 +188,7 @@ foreach ($contestadosDatos as $row) {
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/Recepcion">
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Entradas/Recepcion">
                         <div class="panel-footer">
                             <span class="pull-left">Ver mas Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -197,6 +197,30 @@ foreach ($contestadosDatos as $row) {
                     </a>
                 </div>
             </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-info-circle fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"><?php echo $totalinformativos; ?></div>
+                                <div>Total de Oficios Informativos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Entradas/OficiosInformativos">
+                        <div class="panel-footer">
+                            <span class="pull-left">Ver mas Información</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
         </div>
 
         <hr>
@@ -210,7 +234,7 @@ foreach ($contestadosDatos as $row) {
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-comments fa-5x"></i>
+                                <i class="fa fa-level-up fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge"><?php echo $totalsalientes+$contestados+$fueratiempo; ?></div>
@@ -218,7 +242,7 @@ foreach ($contestadosDatos as $row) {
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/Recepcion">
+                    <a href="<?php echo base_url(); ?>RecepcionGral/Salidas/PanelSalidas">
                         <div class="panel-footer">
                             <span class="pull-left">Ver mas Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

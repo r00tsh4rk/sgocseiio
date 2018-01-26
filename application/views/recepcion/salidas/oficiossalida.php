@@ -230,12 +230,17 @@
                      </td>
                      
                      <td><?php echo $row->observaciones; ?></td>
-                     <td>
-                        <button type="button" onclick="mostrarModalRespuestas('<?php echo $row->id_oficio_salida; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->remitente; ?>','<?php echo $row->cargo_remitente; ?>','<?php echo $row->dependencia_remitente; ?>');" class="form-control btn btn-success btn-sm">
-                         <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Adjuntar Respuesta
-                     </button>
-                 </td> 
-
+                     <?php if($row->tieneRespuesta == 0) { ?>
+                     <td><?php echo "El oficio no requiere respuesta
+                     "; ?>
+                   </td>
+                 <?php } else { ?>
+                 <td>
+                    <button type="button" onclick="mostrarModalRespuestas('<?php echo $row->id_oficio_salida; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->remitente; ?>','<?php echo $row->cargo_remitente; ?>','<?php echo $row->dependencia_remitente; ?>');" class="form-control btn btn-success btn-sm">
+                       <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Adjuntar Respuesta
+                   </button>
+               </td> 
+                 <?php } ?> 
                      <td>
                         <button type="button" onclick="EditarOficio('<?php echo $row->id_oficio_salida; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->tipo_emision; ?>','<?php echo $row->tipo_documento; ?>','<?php echo $row->quien_realiza_oficio; ?>','<?php echo $row->cargo; ?>','<?php echo $row->remitente; ?>','<?php echo $row->cargo_remitente; ?>','<?php echo $row->cargo_remitente; ?>','<?php echo $row->observaciones; ?>');" class="form-control btn btn-danger btn-sm">
                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar 

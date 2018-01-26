@@ -1,4 +1,4 @@
-    <?php 
+   <?php 
 
     function bussiness_days($begin_date, $end_date, $type = 'array') {
         $date_1 = date_create($begin_date);
@@ -490,12 +490,12 @@
          </td>
 
          <td>
-            <button type="button" onclick="mostrarTurnadoDirecciones('<?php echo $row->id_recepcion; ?>');" class="form-control btn btn-warning btn-sm">
+            <button type="button" onclick="mostrarTurnadoDirecciones('<?php echo $row->id_recepcion; ?>','<?php echo $row->num_oficio; ?>');" class="form-control btn btn-warning btn-sm">
              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> C.c.p Direcciones
          </button>
      </td>
      <td>
-        <button type="button" onclick="mostrarTurnadoDepartamentos('<?php echo $row->id_recepcion; ?>','<?php echo $row->direccion_destino; ?>');" class="form-control btn btn-primary btn-sm">
+        <button type="button" onclick="mostrarTurnadoDepartamentos('<?php echo $row->id_recepcion; ?>','<?php echo $row->direccion_destino; ?>','<?php echo $row->num_oficio; ?>');" class="form-control btn btn-primary btn-sm">
          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> C.c.p Deptos  
      </button>
  </td>
@@ -613,7 +613,7 @@
             <label for="hora_fisica" class="control-label">Hora de Recepción Física</label>
             <div class="input-group">
                <span class="input-group-addon"></span>
-               <input type="time" id="hora_fisica" name="hora_recepcion_fisica" min="00:00"  max="23:59" class="form-control" required>
+               <input type="time" id="hora_fisica" name="hora_recepcion_fisica"  class="form-control"  value="<?php echo date("H:i:s") ?>"/ required>
            </div>
            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
            <div class="help-block with-errors"></div>  
@@ -838,10 +838,17 @@
             </select>
         </div>
 
-        <div class="form-group">
+       <!--  <div class="form-group">
             <label>Observaciones</label>
             <input name="observaciones_a" class="form-control" placeholder="Ej. Se recibe oficio sin sello de la dependencia"  required>
-        </div>
+        </div> -->
+
+        <div class="form-group">
+         <label>Observaciones</label>
+         <textarea name="observaciones_a" class="form-control" placeholder="Ej. Se recibe oficio sin sello de la dependencia" >    
+         </textarea>
+     </div>   
+
 
         <button name="btn_enviar_a" type="submit" class="btn btn-info">
           <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Registrar Información
@@ -868,8 +875,8 @@
         <div class="col-lg-12">
           <br>
 
-          <input  type="hidden" name="txt_idoficio">
-
+        <input  type="hidden" name="txt_idoficio">
+        <input  type="hidden" name="txt_num_oficio">
 
           <div class="form-group">
             <label>Emisor</label>
@@ -926,7 +933,8 @@
           <br>
 
           <input  type="hidden" name="txt_idoficio">
-        <input  type="hidden" name="txt_id_direccion">
+          <input  type="hidden" name="txt_id_direccion">
+          <input  type="hidden" name="txt_num_oficio">
 
           <div class="form-group">
             <label>Emisor</label>
@@ -938,10 +946,10 @@
 
 
         <div class="form-group">
-         <?php 
-         echo "<p><label for='area_destino'>Área de destino </label>";
-         echo "<select class='form-control' name='area_destino' id='area_destino'>";
-         if (count($deptos)) {
+           <?php 
+           echo "<p><label for='area_destino'>Área de destino </label>";
+           echo "<select class='form-control' name='area_destino' id='area_destino'>";
+           if (count($deptos)) {
             foreach ($deptos as $list) {
               echo "<option value='". $list->id_area. "'>" . $list->nombre_area . "</option>";
           }
@@ -953,8 +961,16 @@
 
   <div class="form-group">
     <label>Observaciones</label>
-    <input name="observaciones_a" class="form-control" placeholder="Para su conocimiento"  required>
+    <select class="form-control" name="observaciones_a">
+        <option value="conocimiento">Para su conocimiento</option>
+        <option value="atencion">Para su atención</option>
+    </select>
 </div>
+
+<!-- <div class="form-group">
+    <label>Observaciones</label>
+    <input name="observaciones_a" class="form-control" placeholder="Para su conocimiento"  required>
+</div> -->
 
 <button name="btn_enviar_a" type="submit" class="btn btn-info">
   <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Registrar Información
@@ -978,17 +994,19 @@
 }
 
 
-function mostrarTurnadoDirecciones(id)
+function mostrarTurnadoDirecciones(id,$num_oficio)
 {
     document.frmTurnarDir.txt_idoficio.value = id;
+    document.frmTurnarDir.txt_num_oficio.value = $num_oficio;
     $('#modalDir').modal('show');
 }
 
-function mostrarTurnadoDepartamentos(id,id_direccion)
+function mostrarTurnadoDepartamentos(id,id_direccion,num_oficio)
 {
     //txt_id_direccion
     document.frmTurnarDepto.txt_idoficio.value = id;
     document.frmTurnarDepto.txt_id_direccion.value = id_direccion;
+    document.frmTurnarDepto.txt_num_oficio.value = num_oficio;
     $('#modalDeptos').modal('show');
 }
 

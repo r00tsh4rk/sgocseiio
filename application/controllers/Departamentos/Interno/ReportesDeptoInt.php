@@ -210,7 +210,7 @@ public function reporteAllPorDeptos()
 }
 
 
- public function reporteEmitidosDeptoInt()
+public function reporteEmitidosDeptoInt()
 {
    $this->load->library('Excel');
    $objPHPExcel = new PHPExcel();

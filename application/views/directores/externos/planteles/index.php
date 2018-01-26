@@ -231,7 +231,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="<?php echo base_url(); ?>RecepcionGral/Recepcion">
+                    <a href="<?php echo base_url(); ?>Direcciones/Externos/Planteles/RecepcionPlanteles">
                         <div class="panel-footer">
                             <span class="pull-left">Ver mas Información</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

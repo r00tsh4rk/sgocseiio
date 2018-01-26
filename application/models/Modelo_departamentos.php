@@ -51,8 +51,12 @@ class Modelo_departamentos extends CI_Model {
 		     $this->db->join('recepcion_oficios', 'recepcion_oficios.id_recepcion = asignacion_oficio.id_recepcion');
 		     $this->db->join('respuesta_oficios', 'recepcion_oficios.id_recepcion = respuesta_oficios.oficio_recepcion');
 		     $this->db->join('codigos_archivisticos', 'respuesta_oficios.codigo_archivistico = codigos_archivisticos.id_codigo');
-			$this->db->where('asignacion_oficio.id_area', $iddepartamento);
-			$this->db->where('recepcion_oficios.status', 'Contestado');
+		    
+		     $where = "asignacion_oficio.id_area = '".$iddepartamento."' AND recepcion_oficios.status = 'Contestado'";
+			$this->db->where($where, NULL, FALSE);	
+
+			//$this->db->where('asignacion_oficio.id_area', $iddepartamento);
+			//$this->db->where('recepcion_oficios.status', 'Contestado');
 			$this->db->group_by('recepcion_oficios.id_recepcion');
 			$consulta = $this->db->get();
 			return $consulta -> result();

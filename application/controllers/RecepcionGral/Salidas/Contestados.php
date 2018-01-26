@@ -14,7 +14,7 @@ public function __construct()
 	{
 		
 		if ($this->session->userdata('nombre')) {
-			$data['titulo'] = 'Pendientes';
+			$data['titulo'] = 'Contestados';
 			$data['contestados'] = $this -> Modelo_recepcion -> getAllContestados();
 			$this->load->view('plantilla/header', $data);
 			$this->load->view('recepcion/salidas/contestados');

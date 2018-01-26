@@ -16,15 +16,20 @@ class RecepcionInterna extends CI_Controller {
 			$data['titulo'] = 'Panel de Direcciones';
 			$data['entradas'] = $this -> Modelo_direccion -> getAllEntradasInternas($this->session->userdata('nombre'));
 			$data['deptos'] = $this -> Modelo_direccion -> getAllDeptos();
+
+			date_default_timezone_set('America/Mexico_City');
+			$fecha_hoy = date('Y-m-d');
+			$hora_hoy =  date("H:i:s");
 		
 			$consulta = $this->Modelo_direccion->getAllEntradasInternas($this->session->userdata('nombre'));
 			foreach ($consulta as $key) {
 				$idoficio = $key->id_recepcion_int;
-				if (!$key->status == 'Fuera de Tiempo') {
+				if ($fecha_hoy > $key->fecha_termino AND $key->status=='Pendiente') {
 					$this->db->query("CALL comparar_fechas_internas('".$idoficio."')");
 				}
 
 			}
+
 			$this->load->view('plantilla/header', $data);
 			$this->load->view('directores/internos/recepciondir');
 			$this->load->view('plantilla/footer');	

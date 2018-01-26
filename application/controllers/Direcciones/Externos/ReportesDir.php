@@ -993,7 +993,7 @@ public function reporteAllPorDepartamento()
    $objDrawingGob->setDescription('Logo');
    $objDrawingGob->setPath('./assets/img/GobOaxacaLogo.png');
 
-   $objDrawingGob->setCoordinates('F1');
+   $objDrawingGob->setCoordinates('P1');
    $objDrawingGob->setHeight(1000);
    $objDrawingGob->setWidth(306);
    $objDrawingGob->setWorksheet($objPHPExcel->getActiveSheet());
@@ -1054,17 +1054,17 @@ public function reporteAllPorDepartamento()
     {
      if ($fila->status == 'Contestado' OR $fila->status == 'Fuera de Tiempo') {
 
-      $infor_contestados = $this->Modelo_reportes->getOficiosContestadosDirbyID($fila->id_recepcion);
+      $infor_contestados = $this->Modelo_reportes->getOficiosContestadosDeptoByID($fila->id_recepcion);
 
       foreach ($infor_contestados as $key) {
        $objPHPExcel->setActiveSheetIndex(0)
-       ->setCellValue('A'.$i, $key->num_oficio)
+         ->setCellValue('A'.$i, $key->num_oficio)
        ->setCellValue('B'.$i, $key->fecha_recep_fisica)
        ->setCellValue('C'.$i, $key->hora_recep_fisica)
        ->setCellValue('D'.$i, $key->asunto)
-       ->setCellValue('E'.$i, $key->emisor)
+       ->setCellValue('E'.$i, $key->emisor_externo)
        ->setCellValue('F'.$i, $key->dependencia_emite)
-       ->setCellValue('G'.$i, $key->cargo)
+       ->setCellValue('G'.$i, $key->cargo_externo)
        ->setCellValue('H'.$i, $key->fecha_termino)
        ->setCellValue('I'.$i, $key->status)
        ->setCellValue('J'.$i, $key->nombre_area)
@@ -1082,7 +1082,7 @@ public function reporteAllPorDepartamento()
    else
    {
     $objPHPExcel->setActiveSheetIndex(0)
-    ->setCellValue('A'.$i, $fila->num_oficio)
+     ->setCellValue('A'.$i, $fila->num_oficio)
     ->setCellValue('B'.$i, $fila->fecha_recep_fisica)
     ->setCellValue('C'.$i, $fila->hora_recep_fisica)
     ->setCellValue('D'.$i, $fila->asunto)

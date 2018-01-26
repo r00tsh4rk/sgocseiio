@@ -110,8 +110,8 @@
                             <?php }
                             else
                             {
-                             ?>
-                             <li>
+                               ?>
+                               <li>
                                 <a href="<?php echo base_url(); ?>Direcciones/Externos/Asignaciones"><i class="fa fa-hand-o-left"></i> Asignaciones</a>
                             </li>
 
@@ -194,9 +194,9 @@
                                 </div>
                                 <?php } 
                                 if ($error_actualizacion) {     
-                                 ?>
+                                   ?>
 
-                                 <div class="alert alert-danger alert-dismissible" style="text-aling:center; color:#8c8c8c"  role="alert">
+                                   <div class="alert alert-danger alert-dismissible" style="text-aling:center; color:#8c8c8c"  role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <strong>Error!</strong> <?php echo $error_actualizacion; ?>
                                 </div>
@@ -206,7 +206,7 @@
 
 
                             <div align="left" class="row">
-                             <div class="col-lg-12">
+                               <div class="col-lg-12">
                                 <h4>Simbología de estatus</h4>
                                 <span class="label label-success">Oficio Contestado</span>
                                 <span style="background-color: #FFEA3C;" class="label label-warning">Oficio Pendiente por Responder</span>
@@ -263,224 +263,224 @@
                                             <td><?php echo $row->fecha_termino; ?></td>
                                             <td>
                                                 <a href="<?php echo base_url()?>Direcciones/Externos/RecepcionDir/Descargar/<?php echo $row->archivo_oficio; ?>">
-                                                 <img src="<?php echo base_url(); ?>assets/img/download.png" alt="Descargar">
-                                             </a>
-                                         </td>
-                                         <td><?php echo $row->observaciones; ?></td>
-                                          <td>
-                        <?php
+                                                   <img src="<?php echo base_url(); ?>assets/img/download.png" alt="Descargar">
+                                               </a>
+                                           </td>
+                                           <td><?php echo $row->observaciones; ?></td>
+                                           <td>
+                                            <?php
 
-                        if ($row->tipo_dias == 0) 
-                        {
-                            if ($row->requiereRespuesta == 1) {
+                                            if ($row->tipo_dias == 0) 
+                                            {
+                                                if ($row->requiereRespuesta == 1) {
 
-                                if ($row->fecha_recepcion == $row->fecha_recep_fisica) {
-                                 date_default_timezone_set('America/Mexico_City');
-                                 $hoy = date('Y-m-d');
+                                                    if ($row->fecha_recepcion == $row->fecha_recep_fisica) {
+                                                       date_default_timezone_set('America/Mexico_City');
+                                                       $hoy = date('Y-m-d');
 
-                                 $date1 = $hoy;
-                                 $date2 = $row->fecha_termino;
-                                 $diff = abs(strtotime($date2) - strtotime($date1));
+                                                       $date1 = $hoy;
+                                                       $date2 = $row->fecha_termino;
+                                                       $diff = abs(strtotime($date2) - strtotime($date1));
 
-                                 $years = floor($diff / (365*60*60*24));
-                                 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                                 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                                                       $years = floor($diff / (365*60*60*24));
+                                                       $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                                                       $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-                                 if ( $row->status == 'Fuera de Tiempo') {
-                                   printf("El oficio fué respondido fuera de tiempo");
-                               }
+                                                       if ( $row->status == 'Fuera de Tiempo') {
+                                                         printf("El oficio fué respondido fuera de tiempo");
+                                                     }
 
 
-                               else
-                                if ( $row->status == 'Contestado') {
-                                   printf("Oficio respondido a tiempo");
-                               }
+                                                     else
+                                                        if ( $row->status == 'Contestado') {
+                                                         printf("Oficio respondido a tiempo");
+                                                     }
 
-                               else
-                                if ($date2 < $date1) {
-                                   printf("Se han agotado los días de respuesta");
+                                                     else
+                                                        if ($date2 < $date1) {
+                                                         printf("Se han agotado los días de respuesta");
 
-                               }
+                                                     }
 
-                               else
-                               {
-                                  printf("%d días naturales\n", $days );  
-                              } 
-                          }
-                          else 
-                            if($row->fecha_recep_fisica < $row->fecha_recepcion)
-                            {
-                             date_default_timezone_set('America/Mexico_City');
-                             $hoy = date('Y-m-d');
+                                                     else
+                                                     {
+                                                      printf("%d días naturales\n", $days );  
+                                                  } 
+                                              }
+                                              else 
+                                                if($row->fecha_recep_fisica < $row->fecha_recepcion)
+                                                {
+                                                   date_default_timezone_set('America/Mexico_City');
+                                                   $hoy = date('Y-m-d');
 
-                             $subida = $row->fecha_recepcion;
-                             $recepcion = $row->fecha_recep_fisica;
-                             $diferencia = abs(strtotime($recepcion) - strtotime($subida));
+                                                   $subida = $row->fecha_recepcion;
+                                                   $recepcion = $row->fecha_recep_fisica;
+                                                   $diferencia = abs(strtotime($recepcion) - strtotime($subida));
 
-                             $years = floor($diferencia / (365*60*60*24));
-                             $months = floor(($diferencia - $years * 365*60*60*24) / (30*60*60*24));
+                                                   $years = floor($diferencia / (365*60*60*24));
+                                                   $months = floor(($diferencia - $years * 365*60*60*24) / (30*60*60*24));
                              //numero de días entre la fecha de recepcion y la fecha de subida, en el caso de que el oficio se suba días despues de su recepcion
-                             $dias_entre_fechas = floor(($diferencia - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                                                   $dias_entre_fechas = floor(($diferencia - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
                              // días que hay entre el día de hoy y la fecha de termino
-                             $date1 = $hoy;
-                             $date2 = $row->fecha_termino;
-                             $diff = abs(strtotime($date2) - strtotime($date1));
+                                                   $date1 = $hoy;
+                                                   $date2 = $row->fecha_termino;
+                                                   $diff = abs(strtotime($date2) - strtotime($date1));
 
-                             $years = floor($diff / (365*60*60*24));
-                             $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                             $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                                                   $years = floor($diff / (365*60*60*24));
+                                                   $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                                                   $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-                                 if ( $row->status == 'Fuera de Tiempo') {
-                                   printf("El oficio fué respondido fuera de tiempo");
-                               }
-
-
-                               else
-                                if ( $row->status == 'Contestado') {
-                                   printf("Oficio respondido a tiempo");
-                               }
-
-                               else
-                                if ($date2 < $date1) {
-                                   printf("Se han agotado los días de respuesta");
-
-                               }
-
-                               else
-                               {
-                                  printf("%d días naturales\n", $days-$dias_entre_fechas);  
-                              } 
-
-                            }
+                                                   if ( $row->status == 'Fuera de Tiempo') {
+                                                     printf("El oficio fué respondido fuera de tiempo");
+                                                 }
 
 
-                      }   
-                      else
-                      {
-                        echo "El oficio no requiere respuesta";
-                      }
+                                                 else
+                                                    if ( $row->status == 'Contestado') {
+                                                     printf("Oficio respondido a tiempo");
+                                                 }
 
-                  }
-                  else
-                    if ($row->tipo_dias == 1) {
+                                                 else
+                                                    if ($date2 < $date1) {
+                                                     printf("Se han agotado los días de respuesta");
 
-                        if ($row->requiereRespuesta == 1) {
+                                                 }
 
-                           if ($row->fecha_recepcion == $row->fecha_recep_fisica) {
+                                                 else
+                                                 {
+                                                  printf("%d días naturales\n", $days-$dias_entre_fechas);  
+                                              } 
 
-                            date_default_timezone_set('America/Mexico_City');
-                            $hoy = date('Y-m-d');
-
-                            $date1 = $hoy;
-                            $date2 = $row->fecha_termino;
-                            $dias_habiles = getDiasHabiles($date1 , $date2);
-
-                            if ( $row->status == 'Fuera de Tiempo') {
-                             printf("El oficio fué respondido fuera de tiempo");
-                         }
+                                          }
 
 
-                         else
-                            if ( $row->status == 'Contestado') {
-                               printf("Oficio respondido a tiempo");
-                           }
+                                      }   
+                                      else
+                                      {
+                                        echo "El oficio no requiere respuesta";
+                                    }
 
-                           else
-                             if ($date2 < $date1) {
-                               printf("Se han agotado los días de respuesta");
-                           }
-                           else
-                           {
-                            $num_dias = count($dias_habiles);
-                            if ($num_dias == 1) {
-                                echo $num_dias." día hábil";
-                            }
-                            else
-                            {
-                                echo $num_dias." días hábiles";
-                            }
+                                }
+                                else
+                                    if ($row->tipo_dias == 1) {
+
+                                        if ($row->requiereRespuesta == 1) {
+
+                                         if ($row->fecha_recepcion == $row->fecha_recep_fisica) {
+
+                                            date_default_timezone_set('America/Mexico_City');
+                                            $hoy = date('Y-m-d');
+
+                                            $date1 = $hoy;
+                                            $date2 = $row->fecha_termino;
+                                            $dias_habiles = getDiasHabiles($date1 , $date2);
+
+                                            if ( $row->status == 'Fuera de Tiempo') {
+                                               printf("El oficio fué respondido fuera de tiempo");
+                                           }
 
 
-                        }
-                    }
-                        else
-                            if ($row->fecha_recep_fisica < $row->fecha_recepcion) {
-                             date_default_timezone_set('America/Mexico_City');
-                             $hoy = date('Y-m-d');
+                                           else
+                                            if ( $row->status == 'Contestado') {
+                                             printf("Oficio respondido a tiempo");
+                                         }
 
-                             $subida = $row->fecha_recepcion;
-                             $recepcion = $row->fecha_recep_fisica;
-                             $diferencia = abs(strtotime($recepcion) - strtotime($subida));
+                                         else
+                                           if ($date2 < $date1) {
+                                             printf("Se han agotado los días de respuesta");
+                                         }
+                                         else
+                                         {
+                                            $num_dias = count($dias_habiles);
+                                            if ($num_dias == 1) {
+                                                echo $num_dias." día hábil";
+                                            }
+                                            else
+                                            {
+                                                echo $num_dias." días hábiles";
+                                            }
 
-                             $years = floor($diferencia / (365*60*60*24));
-                             $months = floor(($diferencia - $years * 365*60*60*24) / (30*60*60*24));
+
+                                        }
+                                    }
+                                    else
+                                        if ($row->fecha_recep_fisica < $row->fecha_recepcion) {
+                                           date_default_timezone_set('America/Mexico_City');
+                                           $hoy = date('Y-m-d');
+
+                                           $subida = $row->fecha_recepcion;
+                                           $recepcion = $row->fecha_recep_fisica;
+                                           $diferencia = abs(strtotime($recepcion) - strtotime($subida));
+
+                                           $years = floor($diferencia / (365*60*60*24));
+                                           $months = floor(($diferencia - $years * 365*60*60*24) / (30*60*60*24));
                              //numero de días entre la fecha de recepcion y la fecha de subida, en el caso de que el oficio se suba días despues de su recepcion
-                             $dias_entre_fechas = floor(($diferencia - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                                           $dias_entre_fechas = floor(($diferencia - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
 
-                             $date1 = $hoy;
-                             $date2 = $row->fecha_termino;
-                             $dias_habiles = getDiasHabiles($date1 , $date2);
+                                           $date1 = $hoy;
+                                           $date2 = $row->fecha_termino;
+                                           $dias_habiles = getDiasHabiles($date1 , $date2);
 
-                             if ( $row->status == 'Fuera de Tiempo') {
-                               printf("El oficio fué respondido fuera de tiempo");
-                           }
-
-
-                           else
-                            if ( $row->status == 'Contestado') {
-                             printf("Oficio respondido a tiempo");
-                         }
-
-                         else
-                           if ($date2 < $date1) {
-                             printf("Se han agotado los días de respuesta");
-                         }
-                         else
-                         {
-                            $num_dias = count($dias_habiles);
-                            $total_dias = $num_dias - $dias_entre_fechas;
-                            if ($num_dias == 1) {
-                                echo $total_dias." día hábil";
-                            }
-                            else
-                                if($total_dias < 1)
-                                {
-                                 if ( $row->status == 'Fuera de Tiempo') {
-                                     printf("El oficio fué respondido fuera de tiempo");
-                                 }
+                                           if ( $row->status == 'Fuera de Tiempo') {
+                                             printf("El oficio fué respondido fuera de tiempo");
+                                         }
 
 
-                                 else
-                                    if ( $row->status == 'Contestado') {
-                                       printf("Oficio respondido a tiempo");
+                                         else
+                                            if ( $row->status == 'Contestado') {
+                                               printf("Oficio respondido a tiempo");
+                                           }
+
+                                           else
+                                             if ($date2 < $date1) {
+                                               printf("Se han agotado los días de respuesta");
+                                           }
+                                           else
+                                           {
+                                            $num_dias = count($dias_habiles);
+                                            $total_dias = $num_dias - $dias_entre_fechas;
+                                            if ($num_dias == 1) {
+                                                echo $total_dias." día hábil";
+                                            }
+                                            else
+                                                if($total_dias < 1)
+                                                {
+                                                   if ( $row->status == 'Fuera de Tiempo') {
+                                                       printf("El oficio fué respondido fuera de tiempo");
+                                                   }
+
+
+                                                   else
+                                                    if ( $row->status == 'Contestado') {
+                                                     printf("Oficio respondido a tiempo");
+                                                 }
+
+                                                 else
+                                                   if ($date2 < $date1) {
+                                                     printf("Se han agotado los días de respuesta");
+                                                 }
+
+                                             }
+                                             else
+                                             {
+                                               echo $total_dias." días hábiles";
+                                           }
+
+
+                                       }
+
                                    }
-
-                                   else
-                                     if ($date2 < $date1) {
-                                       printf("Se han agotado los días de respuesta");
-                                   }
-
                                }
                                else
                                {
-                                 echo $total_dias." días hábiles";
-                               }
-
+                                echo "El oficio no requiere respuesta";
+                            }
 
                         }
 
-                    }
-                    }
-                    else
-                    {
-                        echo "El oficio no requiere respuesta";
-                    }
-
-                }
-
-                ?>        
-            </td>
+                        ?>        
+                    </td>
                     <?php if($row->flag_deptos == 1) { ?>
                     <td>
                         <?php echo "Oficio Asignado a sus departamentos para su respuesta"; ?>
@@ -490,50 +490,50 @@
                         ?>
                         <td>
                             <button type="button" onclick="mostrarModalRespuestas('<?php echo $row->id_recepcion; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->emisor; ?>');" class="form-control btn btn-success btn-sm">
-                             <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Responder 
-                         </button>
-                     </td>      
-                     <?php } ?>
-                     <td>
-                       <?php 
+                               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Responder 
+                           </button>
+                       </td>      
+                       <?php } ?>
+                       <td>
+                         <?php 
                         //isDepartamento
-                       if ($this->session->userdata('isDepartamento') == 34) {
-                        ?>
-                        <?php echo "Esta dirección no tiene departamentos para asignar oficio"; ?>
-                        <?php } 
-                        else
-                            { ?>
+                         if ($this->session->userdata('isDepartamento') == 34) {
+                            ?>
+                            <?php echo "Esta dirección no tiene departamentos para asignar oficio"; ?>
+                            <?php } 
+                            else
+                                { ?>
 
-                              <button type="button"  onclick="mostrarModaldeAsignacion('<?php echo $row->id_recepcion; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->emisor; ?>');" class="form-control btn btn-danger btn-sm">
-                                 <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Asignar
-                             </button>
-                             <?php } ?>
-                         </td>
+                                  <button type="button"  onclick="mostrarModaldeAsignacion('<?php echo $row->id_recepcion; ?>','<?php echo $row->num_oficio; ?>','<?php echo $row->asunto; ?>','<?php echo $row->emisor; ?>');" class="form-control btn btn-danger btn-sm">
+                                   <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Asignar
+                               </button>
+                               <?php } ?>
+                           </td>
 
-                         <?php if ($row->asignadoPorUnidad  == 1 and $row->asignado  == 0) { ?>
-                         <td>
+                           <?php if ($row->asignadoPorUnidad  == 1 and $row->asignado  == 0) { ?>
+                           <td>
                             <button type="button"  onclick="mostrarModaldeHabilitar('<?php echo $row->id_recepcion; ?>');" class="form-control btn btn-primary btn-sm">
-                                 <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Habilitar
-                             </button>
-                         </td>
-                         <?php } else { ?>  
-                         <td>
-                            <button type="button"  onclick="mostrarModaldeHabilitar('<?php echo $row->id_recepcion; ?>');" class="form-control btn btn-primary btn-sm" disabled>
-                                 <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Habilitar
-                             </button>
-                         </td>
-                         <?php } ?>
+                               <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Habilitar
+                           </button>
+                       </td>
+                       <?php } else { ?>  
+                       <td>
+                        <button type="button"  onclick="mostrarModaldeHabilitar('<?php echo $row->id_recepcion; ?>');" class="form-control btn btn-primary btn-sm" disabled>
+                           <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> Habilitar
+                       </button>
+                   </td>
+                   <?php } ?>
 
-                     </tr>
-                     <?php } ?>
-                 </tbody>
-             </table>
-         </div>
+               </tr>
+               <?php } ?>
+           </tbody>
+       </table>
+   </div>
 
-         <!-- /.row -->
-     </div>
- </div>
- <!-- /.container-fluid -->
+   <!-- /.row -->
+</div>
+</div>
+<!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
 </div>
@@ -623,10 +623,10 @@
         <input type="hidden" name="receptor_h">
 
         <div class="form-group">
-         <?php 
-         echo "<p><label for='codigo_archivistico'>Código Archivístico </label>";
-         echo "<select class='form-control' name='codigo_archivistico' id='codigo_archivistico'>";
-         if (count($codigos)) {
+           <?php 
+           echo "<p><label for='codigo_archivistico'>Código Archivístico </label>";
+           echo "<select class='form-control' name='codigo_archivistico' id='codigo_archivistico'>";
+           if (count($codigos)) {
             foreach ($codigos as $list) {
               echo "<option value='". $list->id_codigo. "'>" . $list->codigo . " - ". $list->descripcion . " - ". $list->seccion ."</option>";
           } 
@@ -707,11 +707,11 @@
         <!-- SE MOSTRARÁN UNICAMENTE LAS AREAS QUE CONFORMEN LA DIRECCION EN TURNO -->
 
         <div class="form-group">
-         <?php 
-         echo "<p><label for='area_destino'>Área de destino </label>";
-         echo "<select class='form-control' name='area_destino' id='area_destino'>";
-         echo "<option value=''>--- Seleccione un Departamento ---</option>";
-         if (count($deptos)) {
+           <?php 
+           echo "<p><label for='area_destino'>Área de destino </label>";
+           echo "<select class='form-control' name='area_destino' id='area_destino'>";
+           echo "<option value=''>--- Seleccione un Departamento ---</option>";
+           if (count($deptos)) {
             foreach ($deptos as $list) {
               echo "<option value='". $list->id_area. "'>" . $list->nombre_area . "</option>";
           }
@@ -734,9 +734,9 @@
 
 
 <div class="form-group">
- <label>Observaciones</label>
- <textarea name="observaciones" class="form-control" placeholder="Observaciones sobre la asignacion del oficio" >    
- </textarea>
+   <label>Observaciones</label>
+   <textarea name="observaciones" class="form-control" placeholder="Observaciones sobre la asignacion del oficio" >    
+   </textarea>
 </div>              
 
 <button name="btn_enviar_a" type="submit" class="btn btn-info">
@@ -787,8 +787,8 @@
 <!-- JAVASCRITP PARA MOSTRAR MODALES -->
 <script type="text/javascript">
 
-   function mostrarModalDir()
-   {
+ function mostrarModalDir()
+ {
     $('#modalDir').modal('show');
 }
 
@@ -839,6 +839,6 @@ function mostrarModaldeAsignacion(idrecepcion, num_oficio, asunto, receptor)
 </script>
 <script>
     function enviar(){
-     document.frmActualizar.submit();
- }
+       document.frmActualizar.submit();
+   }
 </script>

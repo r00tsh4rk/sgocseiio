@@ -203,6 +203,15 @@ class Modelo_direccion extends CI_Model {
 		return $consulta -> result();
 	}
 
+	function seleccionarDeptoInterno($id_recepcion)
+	{
+		$this->db->select('id_area');
+		$this->db->from('asignacion_interna');
+		$this->db->where('id_recepcion', $id_recepcion);
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
     function consultarNombreDepartamento($id_depto)
     {
     	$this->db->select('nombre_area');
@@ -599,6 +608,7 @@ public function getAllDeptos()
 	{
 		$this->db->select('*');
 		$this->db->from('departamentos');
+		$this->db->where('isNull', 0);
 		$consulta = $this->db->get();
 		return $consulta -> result();
 	}
@@ -695,14 +705,19 @@ public function getAllDeptos()
     }
 
 
-     function emitidosInt($id_direccion)
+     function emitidosInt($nombre)
 	{
-
 
 			$this->db->select('*');
 			$this->db->from('emision_interna');
 		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
-			$this->db->where('direcciones.id_direccion', $id_direccion);
+			$this->db->where('emision_interna.emisor', $nombre);
+			
+
+			// $this->db->select('*');
+			// $this->db->from('emision_interna');
+		 //    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			// $this->db->where('direcciones.id_direccion', $id_direccion);
 
 			// $this->db->select('*');
 			// $this->db->from('emision_interna');
@@ -884,13 +899,22 @@ public function getAllDeptos()
 		return $consulta -> result();
 	}
 
-
-
 	public function obtenerCorreoMultiple($id_direccion)
 	{
 		$this->db->select('email_personal, email');
 		$this->db->from('empleados');
 		$where = "direccion='".$id_direccion."' AND isDir = '1'";
+		$this->db->where($where, NULL, FALSE);	
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
+	public function obtenerCorreosInternos($id_recepcion)
+	{
+		$this->db->select('email_personal, email');
+		$this->db->from('emision_interna');
+		$this->db->join('empleados', 'emision_interna.direccion_destino = empleados.direccion');
+		$where = "emision_interna.id_recepcion_int ='".$id_recepcion."' AND empleados.isDir = '1'";
 		$this->db->where($where, NULL, FALSE);	
 		$consulta = $this->db->get();
 		return $consulta -> result();
@@ -906,9 +930,18 @@ public function getAllDeptos()
             return $this->db->update('recepcion_oficios', $data);
     }
 
+    function cambiarBanderaAsignacion($id_recepcion)
+    {
+    	$data = array(
+                'flag_deptos' => 1
+                );
 
+            $this->db->where('id_recepcion', $id_recepcion);
+            return $this->db->update('recepcion_oficios', $data);
+    }
 
-
+							//PLANTELES
+	
 }
 
 /* End of file Modelo_direccion.php */

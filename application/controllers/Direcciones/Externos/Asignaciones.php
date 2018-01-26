@@ -132,8 +132,8 @@ class Asignaciones extends CI_Controller {
 					 //Agregar el correo personal de los usuarios 
 					$this->email->cc($key->email_personal);
 
-					$this->email->subject('Alerta de Término');
-					$this->email->message('<h2>Has recibido una notificación de alerta del oficio: '.$key->num_oficio.'  , con el siguiente mensaje adjunto: " '.$mensaje.' ". <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Oficios Externos"</h2><hr><br> Correo informativo libre de SPAM');
+					$this->email->subject('Alerta de Oficio Pendiente');
+					$this->email->message('<h2>Has recibido una notificación de alerta del oficio: '.$key->num_oficio.'  ,pendiente por responder, con el siguiente mensaje adjunto: " '.$mensaje.' ". <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Oficios Externos"</h2><hr><br> Correo informativo libre de SPAM');
 				}
 				$this->email->send();
 					 //con esto podemos ver el resultado
@@ -202,7 +202,7 @@ class Asignaciones extends CI_Controller {
 					$this->email->cc($key->email_personal);
 
 					$this->email->subject('Alerta de Oficio No Respondido');
-					$this->email->message('<h2>Has recibido una notificación de alerta del oficio: '.$key->num_oficio.'  , con el siguiente mensaje adjunto: " '.$mensaje.' ". <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Oficios Externos"</h2><hr><br> Correo informativo libre de SPAM');
+					$this->email->message('<h2>Has recibido una notificación de alerta del oficio: '.$key->num_oficio.'  ,el cuál no ha sido respondido, con el siguiente mensaje adjunto: " '.$mensaje.' ". <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Oficios Externos"</h2><hr><br> Correo informativo libre de SPAM');
 				}
 				$this->email->send();
 					 //con esto podemos ver el resultado

@@ -15,7 +15,7 @@ class BuzonInterno extends CI_Controller {
 			$data['titulo'] = 'Panel de Direcciones';
 			$data['entradas'] = $this -> Modelo_direccion -> getBuzonDeOficiosEntrantes($this->session->userdata('id_direccion'));
 			$data['deptos'] = $this -> Modelo_direccion -> getDeptos($this->session->userdata('id_direccion'));
-				$data['codigos'] = $this -> Modelo_direccion-> getCodigos();
+			$data['codigos'] = $this -> Modelo_direccion-> getCodigos();
 			
 			date_default_timezone_set('America/Mexico_City');
 			$fecha_hoy = date('Y-m-d');
@@ -79,7 +79,7 @@ class BuzonInterno extends CI_Controller {
 				$dependencia = $this -> input -> post('dependencia_h'),
 				$receptor = $this -> input -> post('receptor_h'),
 				$codigo_archivistico = $this -> input -> post('codigo_archivistico')
-				);
+			);
 
 			if (isset($_POST['btn_enviar']))
 			{
@@ -188,6 +188,46 @@ class BuzonInterno extends CI_Controller {
 
 							if($agregar)
 							{ 	
+
+							// al realizar la respuesta del oficio, se tiene que enviar un correo electronico a la direccion que lo emitio, avisando sobre la respuesta
+							
+							$correos = $this->Modelo_direccion->obtenerCorreosInternos($id_oficio_recepcion);
+
+					 //cargamos la libreria email de ci
+								$this->load->library("email");
+
+					 //configuracion para gmail - Servidor de correo homologado para el sistema
+								$configGmail = array(
+									'protocol' => 'smtp',
+									'smtp_host' => 'ssl://smtp.gmail.com',
+									'smtp_port' => 465,
+									'smtp_user' => 'sgocseiiomail@gmail.com',
+									'smtp_pass' => 'cseiio2017',
+									'mailtype' => 'html',
+									'charset' => 'utf-8',
+									'newline' => "\r\n"
+								);    
+
+					 //cargamos la configuración para enviar con gmail
+								$this->email->initialize($configGmail);
+
+								$this->email->from('Sistema de Gestion de Oficios del CSEIIO');
+								//consulta los correos que pertenecen a la direccion que turna el oficio, entra a un ciclo y envia, los correos dependeindo de la dirección en turno
+
+								foreach ($correos as $key) {
+					 //Correo de la direccion que emitio el oficio
+									$this->email->to($key->email);
+									$this->email->cc($key->email_personal);
+
+								$this->email->subject('Oficio respondido');
+								$this->email->message('<h2>El : '.$emisor.' , ha respondido el oficio interno :'.$num_oficio.'  ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel de "Oficios Internos"</h2><hr><br> Correo informativo libre de SPAM');
+
+								$this->email->send();
+					 //con esto podemos ver el resultado
+								var_dump($this->email->print_debugger());
+
+									}
+
 								$this->session->set_flashdata('exito', 'Se ha enviado la respuesta del oficio: <strong> '.$num_oficio. ' </strong> correctamente');
 								redirect(base_url() . 'Direcciones/Interno/BuzonInterno/');
 							}
@@ -239,6 +279,44 @@ class BuzonInterno extends CI_Controller {
 
 									if($agregar)
 									{ 	
+
+							$correos = $this->Modelo_direccion->obtenerCorreosInternos($id_oficio_recepcion);
+
+
+					 //cargamos la libreria email de ci
+								$this->load->library("email");
+
+					 //configuracion para gmail - Servidor de correo homologado para el sistema
+								$configGmail = array(
+									'protocol' => 'smtp',
+									'smtp_host' => 'ssl://smtp.gmail.com',
+									'smtp_port' => 465,
+									'smtp_user' => 'sgocseiiomail@gmail.com',
+									'smtp_pass' => 'cseiio2017',
+									'mailtype' => 'html',
+									'charset' => 'utf-8',
+									'newline' => "\r\n"
+								);    
+
+					 //cargamos la configuración para enviar con gmail
+								$this->email->initialize($configGmail);
+
+								$this->email->from('Sistema de Gestion de Oficios del CSEIIO');
+								//consulta los correos que pertenecen a la direccion que turna el oficio, entra a un ciclo y envia, los correos dependeindo de la dirección en turno
+							
+								foreach ($correos as $key) {
+					 //Correo de la direccion que emitio el oficio
+									$this->email->to($key->email);
+									$this->email->cc($key->email_personal);
+
+								$this->email->subject('Oficio respondido');
+								$this->email->message('<h2>El : '.$emisor.' , ha respondido el oficio interno :'.$num_oficio.'  ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel de "Oficios Internos"</h2><hr><br> Correo informativo libre de SPAM');
+								$this->email->send();
+					 //con esto podemos ver el resultado
+								var_dump($this->email->print_debugger());
+
+								}
+
 										$this->session->set_flashdata('exito', 'Se ha enviado la respuesta del oficio: <strong>'.$num_oficio. ' </strong> correctamente');
 										redirect(base_url() . 'Direcciones/Interno/BuzonInterno/');
 									}
@@ -288,35 +366,52 @@ class BuzonInterno extends CI_Controller {
 								$id_direccion = $this -> input -> post('iddir'),
 								$id_departamento = $this -> input -> post('area_destino'),
 								$observaciones = $this -> input -> post('observaciones'),
-								);
+							);
 
 							$flag_departamento = 1;
 
 							date_default_timezone_set('America/Mexico_City');
 							$fecha_respuesta = date('Y-m-d');
 							$hora_respuesta =  date("H:i:s");
+
+							$consulta = $this->Modelo_direccion->seleccionarDeptoInterno($id_oficio_recepcion);
+							foreach ($consulta as $key) {
+								$area = $key->id_area;
+							}
+
 			// Obtener el nombre del departamento mediante el id que se selecciona en el formulario
 			// Consulta: Obtiene el departamento cuando el id_departamento sea igual a = ?
 							$depto = $this->Modelo_direccion->consultarNombreDepartamento($id_departamento);
+
 							foreach ($depto as $key) {
 
 								$nombre_depto= $key->nombre_area;
 							}
 
-							$asignar = $this->Modelo_direccion->asignarOficioInterno($id_direccion,$id_departamento,$id_oficio_recepcion,$observaciones, $hora_respuesta, $fecha_respuesta);
+
+							if ($id_departamento != $area ) {
+
+								$asignar = $this->Modelo_direccion->asignarOficioInterno($id_direccion,$id_departamento,$id_oficio_recepcion,$observaciones, $hora_respuesta, $fecha_respuesta);
 
 
 				// La bandera de asignacion debe cambiar para que se muestre en la tabla de recepcion del director y de la recepcionista 
-							$this->Modelo_direccion->ModificarBanderaDeptosInt($id_oficio_recepcion);
+								$this->Modelo_direccion->ModificarBanderaDeptosInt($id_oficio_recepcion);
 
-							if($asignar)
-							{ 	
-								$this->session->set_flashdata('exito', 'El oficio con nº <strong>: '.$num_oficio. '</strong> Se ha asignado al: <strong> ' .$nombre_depto. ' </strong> con éxito');
-								redirect(base_url() . 'Direcciones/Interno/BuzonInterno/');
+								if($asignar)
+								{ 	
+									$this->session->set_flashdata('exito', 'El oficio con nº <strong>: '.$num_oficio. '</strong> Se ha asignado al: <strong> ' .$nombre_depto. ' </strong> con éxito');
+									redirect(base_url() . 'Direcciones/Interno/BuzonInterno/');
+								}
+								else
+								{
+									$this->session->set_flashdata('error', 'No se ha podido asignar el oficio con nº <strong>:   '.$num_oficio. ' </strong> al: <strong>'.$nombre_depto.' </strong> verifique su información.');
+									redirect(base_url() . 'Direcciones/Interno/BuzonInterno/');
+								}
+
 							}
 							else
 							{
-								$this->session->set_flashdata('error', 'No se ha podido asignar el oficio con nº <strong>:   '.$num_oficio. ' </strong> al: <strong>'.$nombre_depto.' </strong> verifique su información.');
+								$this->session->set_flashdata('error', 'Se esta tratando de asignar el mismo oficio al mismo departamento');
 								redirect(base_url() . 'Direcciones/Interno/BuzonInterno/');
 							}
 						}

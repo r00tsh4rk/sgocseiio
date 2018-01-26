@@ -96,6 +96,7 @@
               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales1">Oficios Capturados</a></li>
               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales2">Oficios Contestados</a></li>
               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales3">Oficios Contestados Fuera del Rango Tiempo</a></li>
+               <li style="color: #B7156D;"><a data-toggle="tab" href="#generales4">Oficios Salientes Informativos</a></li>
             </ul>
 
             <div class="tab-content">
@@ -200,14 +201,14 @@
 
 
             <div id="generales4" class="tab-pane fade">
-              <h3>Total de Oficios Pendientes dentro del Rango de Tiempo</h3>
+              <h3>Total de Oficios Informativos</h3>
               <br>
-              <h4>Genera el reporte de los oficios contestados en la modalidad Exterior</h4>
+              <h4>Genera el reporte de los oficios informativos en la modalidad Exterior</h4>
 
               <br>
 
-              <form class="form-horizontal" role="form" method="POST" action="<?php echo base_url(); ?>RecepcionGral/Entradas/Reportes/reportePendientes">
-                <p style="color: #EF4444; font-weight: bold;">*Seleccione el periodo de fechas en el que desee conocer el total de oficios pendientes</p>
+              <form class="form-horizontal" role="form" method="POST" action="<?php echo base_url(); ?>RecepcionGral/Salidas/Reportes/reporteOficiosInformativos">
+                <p style="color: #EF4444; font-weight: bold;">*Seleccione el periodo de fechas en el que desee conocer el total de oficios informativos.</p>
                 <div class="form-group">
                   <label for="fecha_inicio" class="col-lg-2 control-label">Fecha de Inicio:</label>
                   <div class="col-lg-6">

@@ -147,11 +147,7 @@ class Recepcion extends CI_Controller {
 		// Estatus por defecto es : Pendiente
 				$status = 'Pendiente';
 
-				if ($requiereRespuesta == 0) {
-					$correo =  '';
-					$correo_personal = '';
-					$direccion = '8';
-				}
+				
 				if ($fecha_recepcion_fisica < $fecha_subida) {
 					$date1 = $fecha_subida;
 					$date2 = $fecha_recepcion_fisica;
@@ -170,11 +166,27 @@ class Recepcion extends CI_Controller {
 					
 				}
 
-				foreach ($_POST['direccion'] as $indice => $valor){ 
-					//echo "indice: ".$indice." => ".$valor."<br>"; 
-					$agregar = $this->Modelo_recepcion->insertarEntrada($num_oficio,$fecha_subida,$hora_recepcion,$asunto,$tipo_recepcion, $tipo_documento, $emisor,$dependencia, $cargo, $valor, $fecha_termino, $archivo_of, $status, $prioridad, $observaciones,$flag_direccion,$tipo_dias, $requiereRespuesta, $fecha_recepcion_fisica, $hora_recepcion_fisica);
+				// Si el Oficio no requiere respuesta, se agrega con estatus contestado
+				// Y con direccion numero 8 que representa a un oficio sin
+
+				if ($requiereRespuesta == 0) {
+					
+					$correo =  '';
+					$correo_personal = '';
+					$direccion = '8';
+					$status = 'Informativo';
+
+					$agregar = $this->Modelo_recepcion->insertarEntrada($num_oficio,$fecha_subida,$hora_recepcion,$asunto,$tipo_recepcion, $tipo_documento, $emisor,$dependencia, $cargo, $direccion, $fecha_termino, $archivo_of, $status, $prioridad, $observaciones,$flag_direccion,$tipo_dias, $requiereRespuesta, $fecha_recepcion_fisica, $hora_recepcion_fisica);
 				}
-	
+				else
+				{
+					foreach ($_POST['direccion'] as $indice => $valor){ 
+					//echo "indice: ".$indice." => ".$valor."<br>"; 
+						$agregar = $this->Modelo_recepcion->insertarEntrada($num_oficio,$fecha_subida,$hora_recepcion,$asunto,$tipo_recepcion, $tipo_documento, $emisor,$dependencia, $cargo, $valor, $fecha_termino, $archivo_of, $status, $prioridad, $observaciones,$flag_direccion,$tipo_dias, $requiereRespuesta, $fecha_recepcion_fisica, $hora_recepcion_fisica);
+					}
+				}
+
+
 
 				if($agregar)
 				{ 	
@@ -196,8 +208,8 @@ class Recepcion extends CI_Controller {
 						'newline' => "\r\n"
 					);    
 
-		
-				
+
+
 					 //cargamos la configuración para enviar con gmail
 					$this->email->initialize($configGmail);
 					foreach ($_POST['direccion'] as $indice => $valor){ 
@@ -320,7 +332,7 @@ class Recepcion extends CI_Controller {
 		}
 
 
-	    public function llenarComboPersonal()
+		public function llenarComboPersonal()
 		{
 			$options="";
 			if ($_POST["dir2"]== 1) 
@@ -452,7 +464,6 @@ class Recepcion extends CI_Controller {
 				$correos = $this ->Modelo_recepcion->obtenerCorreo($id);
 				foreach ($correos as $key) {
 					 	# code...
-
 					$this->email->to($key->email);
 					 //Agregar el correo personal de los usuarios 
 					$this->email->cc($key->email_personal);
@@ -653,6 +664,7 @@ class Recepcion extends CI_Controller {
 					$data =  array(
 						$direccion_destino = $this -> input -> post('direccion_a'),
 						$id_oficio = $this -> input -> post('txt_idoficio'),
+						$num_oficio = $this -> input -> post('txt_num_oficio'),
 						$observaciones = $this -> input -> post('observaciones_a'),
 						$nombre_emisor = $this -> input -> post('emisor_h')
 					);
@@ -663,20 +675,49 @@ class Recepcion extends CI_Controller {
 					}
 
 					if ($direccion_destino != $direccion) {
-		
-					$turnar = $this->Modelo_recepcion->TurnarADireccion($direccion_destino,$id_oficio,$observaciones,$nombre_emisor);
 
-					if($turnar)
-					{ 	
-						$this->session->set_flashdata('actualizado', 'Se ha turnado copia a la dirección seleccionada');
-						redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
-					}
+						$turnar = $this->Modelo_recepcion->TurnarADireccion($direccion_destino,$id_oficio,$observaciones,$nombre_emisor);
 
-					else
-					{
-						$this->session->set_flashdata('error_actualizacion', 'No se ha turnado copia a la direccion seleccionada, verifique');
-						redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
-					}
+						if($turnar)
+						{ 	
+						// ENVIO DE NOTIFICACION VIA CORREO 
+							$this->load->library("email");
+							$configGmail = array(
+								'protocol' => 'smtp',
+								'smtp_host' => 'ssl://smtp.gmail.com',
+								'smtp_port' => 465,
+								'smtp_user' => 'sgocseiiomail@gmail.com',
+								'smtp_pass' => 'cseiio2017',
+								'mailtype' => 'html',
+								'charset' => 'utf-8',
+								'newline' => "\r\n"
+							);    
+
+							$this->email->initialize($configGmail);
+							$this->email->from('Sistema de Gestion de Oficios del CSEIIO');
+
+							$correos = $this ->Modelo_recepcion->obtenerCorreos($direccion_destino);
+							foreach ($correos as $key) {
+								$this->email->to($key->email);
+					 //Agregar el correo personal de los usuarios 
+								$this->email->cc($key->email_personal);
+							}					
+							$this->email->subject('Copia turnada a esta dirección');
+							$this->email->message('<h2>Has recibido una copia del oficio: '.$num_oficio.', para su conocimiento o atención. <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Oficios con Copia a esta Dirección."</h2><hr><br> Correo informativo libre de SPAM');
+							$this->email->send();
+					 //con esto podemos ver el resultado
+							var_dump($this->email->print_debugger());
+
+						//enviar correo a la direccion en turno indicandole que se le ha turnado una copia del oficio
+							$this->session->set_flashdata('actualizado', 'Se ha turnado copia a la dirección seleccionada');
+							redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+						}
+
+						else
+						{
+							$this->session->set_flashdata('error_actualizacion', 'No se ha turnado copia a la direccion seleccionada, verifique');
+							redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+						}
 					}
 					else
 					{
@@ -708,58 +749,156 @@ class Recepcion extends CI_Controller {
 						$depto_destino = $this -> input -> post('area_destino'),
 						$id_oficio = $this -> input -> post('txt_idoficio'),
 						$observaciones = $this -> input -> post('observaciones_a'),
+						$num_oficio = $this -> input -> post('txt_num_oficio'),
 						$nombre_emisor = $this -> input -> post('emisor_h'),
 						$id_direccion = $this -> input -> post('txt_id_direccion')
 					);
 
-					$consulta = $this->Modelo_direccion->seleccionarDepto($id_oficio);
-					foreach ($consulta as $key) {
-						$area = $key->id_area;
-					}
-
-					date_default_timezone_set('America/Mexico_City');
-					$fecha_recepcion = date('Y-m-d');
-					$hora_recepcion =  date("H:i:s");
-
-					if ($depto_destino != $area) {
+					if ($observaciones == 'atencion') {
 						# code...
 
-
-						$turnar = $this->Modelo_recepcion->TurnarADeptos($depto_destino,$id_oficio,$observaciones,$nombre_emisor);
-
-						if($turnar)
-						{ 	
-						//Asigna el oficio
-							$asignar = $this->Modelo_direccion->asignarOf($id_direccion,$depto_destino,$id_oficio,$observaciones,$fecha_recepcion,$hora_recepcion);
-
-							$habilitar = $this->Modelo_recepcion->cambiarBanderaHabilitado($$id_oficio);
-
-
-
-							$this->session->set_flashdata('actualizado', 'Se ha turnado copia al departamento seleccionado');
-							redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+						$consulta = $this->Modelo_direccion->seleccionarDepto($id_oficio);
+						foreach ($consulta as $key) {
+							$area = $key->id_area;
 						}
 
+						date_default_timezone_set('America/Mexico_City');
+						$fecha_recepcion = date('Y-m-d');
+						$hora_recepcion =  date("H:i:s");
+						$observaciones = 'Para su atención y respuesta';
+
+						if ($depto_destino != $area) {
+						# code...
+							$turnar = $this->Modelo_recepcion->TurnarADeptos($depto_destino,$id_oficio,$observaciones,$nombre_emisor);
+
+							if($turnar)
+							{ 	
+						//Asigna el oficio
+								$asignar = $this->Modelo_direccion->asignarOf($id_direccion,$depto_destino,$id_oficio,$observaciones,$fecha_recepcion,$hora_recepcion);
+
+								$habilitar = $this->Modelo_recepcion->cambiarBanderaHabilitado($id_oficio);
+
+								// ENVIO DE NOTIFICACION VIA CORREO 
+								$this->load->library("email");
+								$configGmail = array(
+									'protocol' => 'smtp',
+									'smtp_host' => 'ssl://smtp.gmail.com',
+									'smtp_port' => 465,
+									'smtp_user' => 'sgocseiiomail@gmail.com',
+									'smtp_pass' => 'cseiio2017',
+									'mailtype' => 'html',
+									'charset' => 'utf-8',
+									'newline' => "\r\n"
+								);    
+
+								$this->email->initialize($configGmail);
+								$this->email->from('Sistema de Gestion de Oficios del CSEIIO');
+								// Obtención de corres del departamento
+								$correos = $this ->Modelo_recepcion->obtenerCorreosPorDepartamento($depto_destino);
+								foreach ($correos as $key) {
+									$this->email->to($key->email);
+								 //Agregar el correo personal de los usuarios 
+									$this->email->cc($key->email_personal);
+								}					
+								$this->email->subject('Copia turnada este departamento');
+								$this->email->message('<h2>Has recibido una copia del oficio: '.$num_oficio.', para antención o respuesta. Solicita que tu Dirección habilite el oficio para su respuesta. <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Buzón de Oficios."</h2><hr><br> Correo informativo libre de SPAM');
+								$this->email->send();
+					 			//con esto podemos ver el resultado
+								var_dump($this->email->print_debugger());
+
+								//enviar correo a la direccion en turno indicandole que se le ha turnado una copia del oficio
+
+								$this->session->set_flashdata('actualizado', 'Se ha turnado copia al departamento seleccionado');
+								redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+							}
+
+							else
+							{
+								$this->session->set_flashdata('error_actualizacion', 'No se ha turnado copia al departamento seleccionado, verifique');
+								redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+							}	
+
+						}
 						else
 						{
-							$this->session->set_flashdata('error_actualizacion', 'No se ha turnado copia al departamento seleccionado, verifique');
+							$this->session->set_flashdata('error', ' Se esta tratando de turnar copia al mismo departamento');
 							redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
 						}
 					}
 					else
-					{
-						$this->session->set_flashdata('error', ' Se esta tratando de turnar copia al mismo departamento');
-						redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+						if ($observaciones == 'conocimiento') {
+							$consulta = $this->Modelo_direccion->seleccionarDepto($id_oficio);
+							foreach ($consulta as $key) {
+								$area = $key->id_area;
+							}
+
+							date_default_timezone_set('America/Mexico_City');
+							$fecha_recepcion = date('Y-m-d');
+							$hora_recepcion =  date("H:i:s");
+							$observaciones = 'Para su conocimiento';
+
+							if ($depto_destino != $area) {
+						# code...
+								$turnar = $this->Modelo_recepcion->TurnarADeptos($depto_destino,$id_oficio,$observaciones,$nombre_emisor);
+
+								if($turnar)
+								{ 	
+						
+								// ENVIO DE NOTIFICACION VIA CORREO 
+								$this->load->library("email");
+								$configGmail = array(
+									'protocol' => 'smtp',
+									'smtp_host' => 'ssl://smtp.gmail.com',
+									'smtp_port' => 465,
+									'smtp_user' => 'sgocseiiomail@gmail.com',
+									'smtp_pass' => 'cseiio2017',
+									'mailtype' => 'html',
+									'charset' => 'utf-8',
+									'newline' => "\r\n"
+								);    
+
+								$this->email->initialize($configGmail);
+								$this->email->from('Sistema de Gestion de Oficios del CSEIIO');
+								// Obtención de corres del departamento
+								$correos = $this ->Modelo_recepcion->obtenerCorreosPorDepartamento($depto_destino);
+								foreach ($correos as $key) {
+									$this->email->to($key->email);
+								 //Agregar el correo personal de los usuarios 
+									$this->email->cc($key->email_personal);
+								}					
+								$this->email->subject('Copia turnada este departamento');
+								$this->email->message('<h2>Has recibido una copia del oficio: '.$num_oficio.', para conocimiento. <hr><br> Ingresa al sistema de control de oficios dando clic <a href="http://localhost/sgocseiio">aquí</a> y revisa el panel "Turnado de Copias."</h2><hr><br> Correo informativo libre de SPAM');
+								$this->email->send();
+					 			//con esto podemos ver el resultado
+								var_dump($this->email->print_debugger());
+
+
+									$this->session->set_flashdata('actualizado', 'Se ha turnado copia al departamento seleccionado');
+									redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+								}
+
+								else
+								{
+									$this->session->set_flashdata('error_actualizacion', 'No se ha turnado copia al departamento seleccionado, verifique');
+									redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+								}	
+
+							}
+							else
+							{
+								$this->session->set_flashdata('error', ' Se esta tratando de turnar copia al mismo departamento');
+								redirect(base_url() . 'RecepcionGral/Entradas/Recepcion/');
+							}
+						}
 					}
 				}
-			}
 
 
-			public function Descargar($name)
-			{
-				$data = file_get_contents($this->folder.$name); 
-				force_download($name,$data); 
-			}
+				public function Descargar($name)
+				{
+					$data = file_get_contents($this->folder.$name); 
+					force_download($name,$data); 
+				}
 
 		 /* Cambia el estatus de recepcion cuando la fecha actual ha sobrepasado la fecha de termino del oficio
   
