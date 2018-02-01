@@ -61,7 +61,7 @@ function getDiasHabiles($fechainicio, $fechafin, $diasferiados = array()) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo base_url(); ?>RecepcionGral/PanelRecepGral">SGOCSEIIO</a>
+                    <a class="navbar-brand" href="<?php echo base_url(); ?>Admin/PanelAdmin/">SGOCSEIIO</a>
                 </div>
                 <!-- Top Menu Items -->
                 <ul class="nav navbar-right top-nav">
@@ -79,12 +79,12 @@ function getDiasHabiles($fechainicio, $fechafin, $diasferiados = array()) {
                     </li>
                 </ul>
                 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-               <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li >
+                    <li>
                         <a href="<?php echo base_url(); ?>Admin/PanelAdmin/"><i class="fa fa-desktop"></i> Inicio</a>
                     </li>
-                    <li >
+                    <li>
                         <a href="<?php echo base_url(); ?>Admin/Oficios/Externos/PanelOfExternos"><i class="fa fa-plus"></i> Oficios Externos</a>
                     </li>
                     <li class="active">
@@ -217,7 +217,6 @@ function getDiasHabiles($fechainicio, $fechafin, $diasferiados = array()) {
                                 <th>Estatus</th>
                                 <th>Días Restantes</th>
                                 <th>Área responsable de responder oficio</th>
-                                <th>Alertas</th>
                             </tr>
                         </thead >
                         <tbody style="font-size:smaller; font-weight: bold ;">
@@ -481,12 +480,7 @@ function getDiasHabiles($fechainicio, $fechafin, $diasferiados = array()) {
                                 printf($row->nombre_direccion);
                             }
                             ?>
-                        </td>    
-                        <td>
-                            <button type="button" onclick="mostrarAlertas('<?php echo $row->id_recepcion; ?>');" class="form-control btn btn-danger btn-sm">
-                             <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> Alertas  
-                         </button>
-                     </td>                              
+                        </td>                                
                  </tr>
                  <?php } ?>
              </tbody>

@@ -241,6 +241,7 @@ class Modelo_recepcion extends CI_Model {
 	{
 		$this->db->select('*');
 		$this->db->from('departamentos');
+		$this->db->where('isNull', 0);
 		$consulta = $this->db->get();
 		return $consulta -> result();
 	}

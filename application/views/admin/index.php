@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SGOCSEIIO</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>Admin/PanelAdmin">SGOCSEIIO</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -42,6 +42,12 @@
                     <li>
                         <a href="<?php echo base_url(); ?>Admin/Accesos/PanelAccesos"><i class="fa fa-unlock-alt"></i> Control de Accesos</a>
                     </li>
+                    <li>
+                        <a href="<?php echo base_url(); ?>Admin/Oficios/Externos/PanelOfExternos"><i class="fa fa-chevron-up"></i> Monitor de Oficios Externos</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo base_url(); ?>Admin/Oficios/Internos/PanelOfInternos"><i class="fa fa-chevron-down"></i> Monitor de Oficios Internos</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.n /.navbar-collapse -->
@@ -72,10 +78,10 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
+                                        <i class="fa fa-users fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">26</div>
+                                        <div class="huge"><?php echo $empleados_registrados; ?></div>
                                         <div>Total de Empleados Registrados</div>
                                     </div>
                                 </div>
@@ -95,10 +101,10 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                                        <i class="fa fa-user fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">12</div>
+                                        <div class="huge"><?php echo $usuarios_registrados; ?></div>
                                         <div>Total de Usuarios con Acceso al Sistema</div>
                                     </div>
                                 </div>
@@ -118,10 +124,10 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
+                                        <i class="fa fa-shield fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">3</div>
+                                        <div class="huge"><?php echo $accesos; ?></div>
                                         <div>Total de accesos registrados al sistema</div>
                                     </div>
                                 </div>
@@ -144,7 +150,7 @@
                                         <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">13</div>
+                                        <div class="huge"><?php echo $externos; ?></div>
                                         <div>Total de oficios registrados en el proceso Externo</div>
                                     </div>
                                 </div>
@@ -169,7 +175,7 @@
                                         <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">13</div>
+                                        <div class="huge"><?php echo $internos; ?></div>
                                         <div>Total de oficios registrados en el proceso Interno</div>
                                     </div>
                                 </div>

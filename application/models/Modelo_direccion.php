@@ -940,7 +940,71 @@ public function getAllDeptos()
             return $this->db->update('recepcion_oficios', $data);
     }
 
-							//PLANTELES
+							//ADMINISTRADORES
+     function getaAllBuzonDeOficiosEntrantes()
+	{
+			$this->db->select('*');
+			$this->db->from('emision_interna');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			//$this->db->where('direcciones.id_direccion', $id_direccion);
+		    //$this->db->where('emision_interna.respondido', '0');
+			//$this->db->where('emision_interna.flag_deptos', '0');
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
+
+	function getFullPendientesInterno()
+	{
+			$this->db->select('*');
+			$this->db->from('emision_interna');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			$where = "emision_interna.status = 'Pendiente' OR emision_interna.status = 'No Contestado'";
+			$this->db->where($where, NULL, FALSE);
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
+
+	public function getFullContestadosInternos()
+	{
+		$this->db->select('*');
+		$this->db->select('emision_interna.emisor as emisorexterno, emision_interna.cargo as cargoexterno');
+		$this->db->from('emision_interna');
+		$this->db->join('respuesta_interna', 'emision_interna.id_recepcion_int = respuesta_interna.oficio_emision');
+		$this->db->join('codigos_archivisticos', 'codigos_archivisticos.id_codigo = respuesta_interna.codigo_archivistico');
+		$this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+	
+		$where = "emision_interna.status = 'Contestado'";
+		$this->db->where($where, NULL, FALSE);
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
+	public function getFullFueraTiempoInternos()
+	{
+		$this->db->select('*');
+		$this->db->select('emision_interna.emisor as emisorexterno, emision_interna.cargo as cargoexterno');
+			$this->db->from('emision_interna');
+			$this->db->join('respuesta_interna', 'emision_interna.id_recepcion_int = respuesta_interna.oficio_emision');
+		$this->db->join('codigos_archivisticos', 'codigos_archivisticos.id_codigo = respuesta_interna.codigo_archivistico');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			$where = "emision_interna.status = 'Fuera de Tiempo'";
+			$this->db->where($where, NULL, FALSE);
+			$consulta = $this->db->get();
+			return $consulta -> result();
+			
+	}
+
+	function getFullNoContestadosInternos()
+	{
+			$this->db->select('*');
+			$this->db->from('emision_interna');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			$where = "emision_interna.status = 'No Contestado'";
+			$this->db->where($where, NULL, FALSE);
+			$consulta = $this->db->get();
+			return $consulta -> result();
+		
+	}
 	
 }
 

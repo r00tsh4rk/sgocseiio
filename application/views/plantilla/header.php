@@ -247,6 +247,19 @@ $(document).ready(function(){
    })
 });
 
+// PANEL ADMINISTRATIVO.- LLENADO DE COMBO  - INSERT
+
+$(document).ready(function(){
+   $("#direccion_adsc").change(function () {
+           $("#direccion_adsc option:selected").each(function () {
+            direccion_adsc=$('#direccion_adsc').val();
+            $.post("<?php echo base_url(); ?>Admin/Empleados/JefesDepto/llenarComboDeptos", { direccion_adsc: direccion_adsc}, function(data){
+            $("#departamento_adsc").html(data);
+            });            
+        });
+   })
+});
+
 
 
 

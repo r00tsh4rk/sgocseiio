@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SGOCSEIIO</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>Admin/PanelAdmin">SGOCSEIIO</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -118,15 +118,6 @@
                     <?php  } ?>
                 </div>
 
-                <div align="right" class="row">
-                 <div class="col-lg-12">
-                   <button type="button" onclick="mostrarModal();"  class="btn btn-success" >
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
-                    <strong>Nuevo Director de Área</strong>
-                </button>
-            </div>
-        </div>
-
             <hr>
             <div class="row">
                 <div class="table-responsive">
@@ -140,7 +131,6 @@
                             <th>Email</th>
                             <th>Email Personal</th>
                             <td>Editar</td>
-                            <td>Eliminar</td>
                         </tr>
                     </thead >
                     <tbody style="font-size:smaller; font-weight: bold ;">
@@ -154,15 +144,10 @@
                                 <td><?php echo $row->email; ?></td>
                                 <td><?php echo $row->email_personal; ?></td>  
                                  <td>
-                                    <button type="button" onclick="EditarJefe('<?php echo $row->clave_area; ?>','<?php echo $row->nombre_empleado; ?>','<?php echo $row->direccion; ?>','<?php echo $row->departamento; ?>','<?php echo $row->descripcion; ?>','<?php echo $row->email; ?>','<?php echo addcslashes($row->email_personal,"\\\"\"\n\r"); ?>');" class="form-control btn btn-warning btn-sm">
+                                    <button type="button" onclick="EditarDirector('<?php echo $row->clave_area; ?>','<?php echo $row->nombre_empleado; ?>','<?php echo $row->direccion; ?>','<?php echo $row->descripcion; ?>','<?php echo $row->email; ?>','<?php echo addcslashes($row->email_personal,"\\\"\"\n\r"); ?>');" class="form-control btn btn-warning btn-sm">
                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar 
                                    </button>
                                </td>
-                               <td>
-                                   <button type="button" onclick="EliminarJefe('<?php echo $row->clave_area; ?>');" class="form-control btn btn-danger btn-sm">
-                                       <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar 
-                                   </button>
-                               </td>  
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -184,3 +169,103 @@
 
 </div>
     <!-- /#wrapper -->
+<div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 align="center" class="modal-title">Modificar Información del Empleado</h4>
+    </div>
+    <form data-toggle="validator" enctype="multipart/form-data" role="form" method="POST" name="frmEditarUsuario" action="<?php echo base_url(); ?>Admin/Empleados/Directores/EditarDirectorArea">
+        <div class="col-lg-12">
+          <br>
+
+          <input  type="hidden" name="clave_area">
+
+          <div class="form-group has-feedback">
+            <label for="nombre_empleado" class="control-label">Nombre de Empleado</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="nombre_empleado" id="nombre_empleado" class="form-control" placeholder="Nombre Completo del Funcionario" required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            <div class="help-block with-errors"></div>  
+        </div>
+
+
+          <div class="form-group">
+            <label>Dirección</label>
+            <select class="form-control" name="direccion_a">
+                <option value="1">Dirección General</option>
+                <option value="2">Dirección Administrativa</option>
+                <option value="3">Dirección de Estudios Superiores</option>
+                <option value="4">Dirección de Planeación</option>
+                <option value="5">Unidad Jurídica</option>
+                <option value="6">Unidad de Acervo</option>
+                <option value="7">Dirección de Desarrollo Académico</option>
+            </select>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label for="descripcion" class="control-label">Cargo</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="descripcion" id="descripcion" class="form-control" placeholder="Cargo del Funcionario" required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            <div class="help-block with-errors"></div>  
+        </div>
+
+         <div class="form-group has-feedback">
+            <label for="email" class="control-label">Email Institucional</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Correo Institucional" required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            <div class="help-block with-errors"></div>  
+        </div>
+
+        <div class="form-group has-feedback">
+            <label for="email_personal" class="control-label">Email Personal</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="email" name="email_personal" id="email_personal" class="form-control" placeholder="Correo Personal" required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            <div class="help-block with-errors"></div>  
+        </div>
+
+        <button name="btn_enviar_a" type="submit" class="btn btn-info">
+          <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Modificar Información
+      </button>
+
+  </div>
+</form>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger btn-circle" data-dismiss="modal"><i class="fa fa-times"></i></button>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- SECCION DE SCRIPTS JS -->
+<script type="text/javascript">
+   function EditarDirector(id, nombre, direccion, cargo,email, email_personal)
+   {
+    document.frmEditarUsuario.clave_area.value = id;
+    document.frmEditarUsuario.nombre_empleado.value = nombre;
+    document.frmEditarUsuario.direccion_a.value = direccion;
+    document.frmEditarUsuario.descripcion.value = cargo;
+    document.frmEditarUsuario.email.value = email;
+    document.frmEditarUsuario.email_personal.value = email_personal;
+    $('#modalActualizar').modal('show');
+   }
+
+    function EliminarDirector()
+   {
+    $('#modalEliminar').modal('show');
+   }
+
+</script>

@@ -58,63 +58,200 @@ class Model_admin extends CI_Model {
 	}
 
 
+
+
 	// -------------  ---- Empleados ----- ----------------
 	// Agregar Jefe de Departamento
-	public function addJefeDepto()
+	
+	public function getDeptosByIdDireccion($id_direccion)
 	{
+		$this->db->select('*');
+		$this->db->from('departamentos');
+		$this->db->where('direccion', $id_direccion);
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
 
+	public function getClaveArea($clave_area)
+	{
+		$this->db->select('*');
+		$this->db->from('empleados');
+		$this->db->where('clave_area', $clave_area);
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}	
+
+
+	public function addJefeDepto($clave_area,$nombre_empleado,$direccion,$departamento_adsc,$cargo, $email, $email_personal, $isDir)
+	{
+		$data = array(
+				'clave_area' => $clave_area,
+				'nombre_empleado' => $nombre_empleado,
+				'direccion' => $direccion,
+				'departamento' => $departamento_adsc,
+				'descripcion' => $cargo,
+				'email' => $email,
+				'email_personal' => $email_personal,
+				'isDir'=> $isDir
+				);
+
+			return $this->db->insert('empleados', $data);
+			
 	}
 
 	//Actualizar o modificar informacion de un jefe de Departamento
-	public function updateJefeDepto( $id = NULL )
+	public function updateJefeDepto($clave_area,$nombre_empleado,$direccion,$departamento_adsc,$cargo, $email, $email_personal, $isDir)
 	{
+		$data = array(
+				'clave_area' => $clave_area,
+				'nombre_empleado' => $nombre_empleado,
+				'direccion' => $direccion,
+				'departamento' => $departamento_adsc,
+				'descripcion' => $cargo,
+				'email' => $email,
+				'email_personal' => $email_personal,
+				'isDir'=> $isDir
+				);
 
+			$this->db->where('clave_area', $clave_area);
+			return $this->db->update('empleados', $data);
+			
 	}
 
-	//Eliminar la información de un jefe de departamento
-	public function deleteJefeDepto( $id = NULL )
-	{
 
+
+	//Eliminar la información de un jefe de departamento
+	public function deleteJefeDepto($id)
+	{
+		$this->db->where('clave_area',$id);
+			return $this->db->delete('empleados');
 	}
 
 	// -------------- ---- Directores de Área ---------------
-	// Agregar Director de Área
-	public function addDirectorArea()
-	{
-
-	}
 
 	//Actualizar o modificar Director de Área
-	public function updateDirectorArea( $id = NULL )
+	public function updateDirectorArea($id,$nombre,$direccion,$descripcion, $email, $email_personal)
 	{
+		$data = array(
+				'nombre_empleado' => $nombre,
+				'direccion' => $direccion,
+				'descripcion' => $descripcion,
+				'email' => $email,
+				'email_personal' => $email_personal
+				);
 
+			$this->db->where('clave_area', $id);
+			return $this -> db -> update('empleados', $data);
 	}
 
-	//Eliminar la información de un Director de Área
-	public function deleteDirectorArea( $id = NULL )
-	{
-
-	}
 
 	// -------------- ---- Director de Plantel ---------------
-	// Agregar Director de Área
-	public function addDirectorPlantel()
-	{
-
-	}
 
 	//Actualizar o modificar Director de Área
-	public function updateDirectorPlantel( $id = NULL )
+	public function updateDirectorPlantel( $id,$nombre,$direccion,$descripcion, $email, $email_personal )
 	{
+		$data = array(
+				'nombre_empleado' => $nombre,
+				'direccion' => $direccion,
+				'descripcion' => $descripcion,
+				'email' => $email,
+				'email_personal' => $email_personal
+				);
 
+			$this->db->where('clave_area', $id);
+			return $this -> db -> update('empleados', $data);
 	}
 
-	//Eliminar la información de un Director de Área
-	public function deleteDirectorPlantel( $id = NULL )
-	{
+	// -------------- --------- GESTIÓN DE USUARIOS ----------------
 
+	public function getUsuariosPorDarDeAlta()
+	{
+		$this->db->select('*');
+		$this->db->from('empleados');
+		$this->db->where('activo', 0);
+		$consulta = $this->db->get();
+		return $consulta -> result();
 	}
 
+	public function addUsuario($clave_area,$password,$nivel)
+	{
+		$data = array(
+				'clave_area' => $clave_area,
+				'password' => $password,
+				'nivel' => $nivel
+				);
+
+			return $this->db->insert('usuarios', $data);
+			
+	}
+
+	public function cambiarBanderaActivacion($clave_area)
+	{	
+			$data = array(
+                'activo' => 1
+                );
+
+            $this->db->where('clave_area', $clave_area);
+            return $this->db->update('empleados', $data);
+	}
+
+	public function updateUsuario($clave_area,$password,$nivel)
+	{
+		$data = array(
+				
+				'password' => $password,
+				'nivel' => $nivel
+				);
+
+		$this->db->where('clave_area', $clave_area);
+		return $this->db->update('usuarios', $data);
+	}
+
+
+	//Eliminar la información de un jefe de departamento
+	public function deleteUsuario($id)
+	{
+		$this->db->where('clave_area',$id);
+			return $this->db->delete('usuarios');
+	}
+
+	public function cambiarBanderaBaja($clave_area)
+	{	
+			$data = array(
+                'activo' => 0
+                );
+
+            $this->db->where('clave_area', $clave_area);
+            return $this->db->update('empleados', $data);
+	}
+
+	// ------------ PANEL ESTADÍSTICO --------------
+	
+
+    public function total_empleados_registrados()
+    {
+        return $this->db->count_all_results('empleados');
+    }
+
+    public function total_usuarios_en_alta()
+    {
+        return $this->db->count_all_results('usuarios');
+    }
+
+    public function total_accesos_registrados()
+    {
+        return $this->db->count_all_results('crtl_acceso');
+    }
+
+    public function total_oficios_externos()
+    {
+        return $this->db->count_all_results('recepcion_oficios');
+    }
+
+    public function total_oficios_internos()
+    {
+        return $this->db->count_all_results('emision_interna');
+    }
 
 
 }

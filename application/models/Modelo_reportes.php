@@ -741,17 +741,100 @@ class Modelo_reportes extends CI_Model {
 			return $consulta -> result();
 	}
 
-	// public function getAllRespuestasASalidas()
-	// {
-	// 	$this->db->select('*');
-	// 	$this->db->from('oficios_salida');
-	// 	$this->db->join('codigos_archivisticos', 'oficios_salida.codigo_archivistico = codigos_archivisticos.id_codigo');
-	// 	$this->db->join('respuesta_oficios_salida', 'oficios_salida.id_oficio_salida = respuesta_oficios_salida.oficio_emision');
+	// --------- REPORTES DE ADMINISTRADOR - INTERNOS ------------------
+	
+	public function getFullOficiosDireccionesInt($inicio, $final)
+	{
+		$this->db->select('*');
+		$this->db->from('emision_interna');
+		$this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+		$where = "emision_interna.fecha_emision BETWEEN '".$inicio."' AND '".$final."'";
+		$this->db->where($where, NULL, FALSE);	
+		$this->db->order_by('emision_interna.fecha_emision', 'desc');
+		$consulta = $this->db->get();
+		return $consulta -> result();
 
-	// 	$consulta = $this->db->get();
-	// 		return $consulta -> result();
-	// }
+	}
 
+	function getFullContestadosInternos($inicio, $final)
+	{
+
+		$this->db->select('*');
+		$this->db->select('emision_interna.emisor as emisorexterno, emision_interna.cargo as cargoexterno');
+		$this->db->from('emision_interna');
+		$this->db->join('respuesta_interna', 'emision_interna.id_recepcion_int = respuesta_interna.oficio_emision');
+		$this->db->join('codigos_archivisticos', 'codigos_archivisticos.id_codigo = respuesta_interna.codigo_archivistico');
+		$this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+		 $where = "emision_interna.fecha_emision BETWEEN '".$inicio."' AND '".$final."' AND emision_interna.status='Contestado'";
+		$this->db->where($where, NULL, FALSE);
+		$this->db->order_by('emision_interna.fecha_emision', 'desc');
+		$consulta = $this->db->get();
+		return $consulta -> result();
+
+	}
+
+		function getFullNoContestadosInternos($inicio, $final)
+	{
+	
+
+		$this->db->select('*');
+			$this->db->from('emision_interna');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			$where = "emision_interna.fecha_emision BETWEEN '".$inicio."' AND '".$final."' AND emision_interna.status='No Contestado'";
+
+			$this->db->where($where, NULL, FALSE);
+			$this->db->order_by('emision_interna.fecha_emision', 'desc');
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
+
+	function getFullPendientesInternos($inicio, $final)
+	{
+		
+
+			$this->db->select('*');
+			$this->db->from('emision_interna');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+	
+
+			$where = "emision_interna.status = 'Pendiente' OR emision_interna.status = 'No Contestado' AND emision_interna.fecha_emision BETWEEN '".$inicio."' AND '".$final."'";
+			$this->db->where($where, NULL, FALSE);
+			$this->db->order_by('emision_interna.fecha_emision', 'desc');
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
+
+	function getFullFueraTiempoInternos($inicio, $final)
+	{
+		
+		$this->db->select('*');
+		$this->db->select('emision_interna.emisor as emisorexterno, emision_interna.cargo as cargoexterno');
+			$this->db->from('emision_interna');
+			$this->db->join('respuesta_interna', 'emision_interna.id_recepcion_int = respuesta_interna.oficio_emision');
+		$this->db->join('codigos_archivisticos', 'codigos_archivisticos.id_codigo = respuesta_interna.codigo_archivistico');
+		    $this->db->join('direcciones', 'emision_interna.direccion_destino = direcciones.id_direccion');
+			
+			$where = "emision_interna.fecha_emision BETWEEN '".$inicio."' AND '".$final."' AND emision_interna.status='Fuera de Tiempo'";
+			$this->db->where($where, NULL, FALSE);
+			$this->db->order_by('emision_interna.fecha_emision', 'desc');
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
+
+
+	// ---------  REPORTE DE ACCESOS ------------
+	// 
+	
+	public function getAllAccesos($inicio, $final)
+	{
+		$this->db->select('*');
+		$this->db->from('crtl_acceso');
+		$where = "fecha_acceso BETWEEN '".$inicio."' AND '".$final."'";
+			$this->db->where($where, NULL, FALSE);
+			$this->db->order_by('fecha_acceso', 'desc');
+			$consulta = $this->db->get();
+			return $consulta -> result();
+	}
 
 
 }

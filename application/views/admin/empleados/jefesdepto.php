@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SGOCSEIIO</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>Admin/PanelAdmin">SGOCSEIIO</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -161,10 +161,14 @@
                                    </button>
                                </td>
                                <td>
-                                   <button type="button" onclick="EliminarJefe('<?php echo $row->clave_area; ?>');" class="form-control btn btn-danger btn-sm">
+                                <a href="<?php echo base_url()?>Admin/Empleados/JefesDepto/eliminarJefeDepto/<?php echo $row->clave_area; ?>">
+                                   <button type="button" onclick="if(confirma() == false) return false" class="form-control btn btn-danger btn-sm">
                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar 
                                    </button>
+                                   </a>
                                </td>
+
+
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -186,3 +190,237 @@
 
 </div>
     <!-- /#wrapper -->
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 align="center" class="modal-title">Registrar a un Nuevo Empleado</h4>
+    </div>
+    <form data-toggle="validator" enctype="multipart/form-data" role="form" method="POST" name="frmRegistroOficio" action="<?php echo base_url(); ?>Admin/Empleados/JefesDepto/agregarJefeDepto">
+        <div class="col-lg-12">
+          <br>
+        
+        <!-- Numero de oficio: -->
+          <div class="form-group has-feedback">
+            <label for="clave_area" class="control-label">Usuario</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="clave_area" id="clave_area" class="form-control" placeholder="Ej. admin_requsiciones" required>
+            </div>  
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div> 
+        </div>
+
+       <!-- Asunto: -->
+        <div class="form-group has-feedback">
+            <label for="nombre_completo" class="control-label">Nombre Completo</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="nombre_completo" id="nombre_completo" class="form-control" placeholder="Ej. LIC. ANEL RAMOS BARRAGÁN" required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div> 
+        </div>
+
+        <div class="form-group">
+            <label>Dirección  de Adscripción</label>
+            <select class="form-control" id="direccion_adsc" name="direccion">
+                <option value="">- Seleccione una Dirección -</option>
+                <option value="1">Dirección General</option>
+                <option value="2">Dirección Administrativa</option>
+                <option value="3">Dirección de Estudios Superiores</option>
+                <option value="4">Dirección de Planeación</option>
+                <option value="7">Dirección de Desarrollo Académico</option>
+            </select>
+        </div>
+
+
+         <div class="form-group">
+            <label>Departamento de Adscripción</label>
+            <select class="form-control" id="departamento_adsc" name="departamento_adsc">
+                
+            </select>
+        </div>
+
+
+        <div class="form-group has-feedback">
+            <label for="cargo_empleado" class="control-label">Cargo</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="cargo_empleado" id="cargo_empleado" class="form-control" placeholder="Ej. JEF@ DEL DEPARTAMENTO DE CONTROL ESCOLAR"  required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div> 
+        </div>
+
+
+        <div class="form-group has-feedback">
+            <label for="email" class="control-label">Correo Institucional</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Ej. coordinador@cseiio.edu.mx"  required>
+            </div> 
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div>  
+        </div>
+
+
+          <div class="form-group has-feedback">
+            <label for="email_personal" class="control-label">Correo Personal</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="email" name="email_personal" id="email_personal" class="form-control" placeholder="Ej. usuario@gmail.com"  required>
+            </div> 
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div>  
+        </div>
+
+       
+
+    <button name="btn_enviar" type="submit" class="btn btn-info">
+      <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Registrar Información
+  </button>
+
+</div>
+</form>
+
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger btn-circle" data-dismiss="modal"><i class="fa fa-times"></i></button>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- ACTUALIZAR -->
+<div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 align="center" class="modal-title">Modificar información del Empleado</h4>
+    </div>
+    <form data-toggle="validator" enctype="multipart/form-data" role="form" method="POST" name="frmModificarEmpleado" action="<?php echo base_url(); ?>Admin/Empleados/JefesDepto/modificarJefeDepto">
+        <div class="col-lg-12">
+          <br>
+        
+        <!-- Numero de oficio: -->
+         <input type="hidden" name="clave_area_a">
+       <!-- Asunto: -->
+        <div class="form-group has-feedback">
+            <label for="nombre_completo_a" class="control-label">Nombre Completo</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="nombre_completo_a" id="nombre_completo_a" class="form-control" placeholder="Ej. LIC. ANEL RAMOS BARRAGÁN" required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div> 
+        </div>
+
+        <div class="form-group">
+            <label>Dirección  de Adscripción</label>
+            <select class="form-control" id="direccion_adsc_a" name="direccion_a">
+                <option value="1">Dirección General</option>
+                <option value="2">Dirección Administrativa</option>
+                <option value="3">Dirección de Estudios Superiores</option>
+                <option value="4">Dirección de Planeación</option>
+                <option value="7">Dirección de Desarrollo Académico</option>
+            </select>
+        </div>
+
+
+            <div class="form-group">
+             <?php 
+             echo "<p><label for='departamento_adsc_a'>Departamento de Adscripción </label>";
+             echo "<select class='form-control' name='departamento_adsc_a' id='departamento_adsc_a'>";
+             if (count($deptos)) {
+                foreach ($deptos as $list) {
+                  echo "<option value='". $list->id_area. "'>" . $list->nombre_area . "</option>";
+              }
+          }
+          echo "</select><br/>";
+          ?>
+      </div>
+
+
+        <div class="form-group has-feedback">
+            <label for="cargo_empleado_a" class="control-label">Cargo</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input name="cargo_empleado_a" id="cargo_empleado_a" class="form-control" placeholder="Ej. JEF@ DEL DEPARTAMENTO DE CONTROL ESCOLAR"  required>
+            </div>
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div> 
+        </div>
+
+
+        <div class="form-group has-feedback">
+            <label for="email_a" class="control-label">Correo Institucional</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="email" name="email_a" id="email_a" class="form-control" placeholder="Ej. coordinador@cseiio.edu.mx"  required>
+            </div> 
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div>  
+        </div>
+
+
+          <div class="form-group has-feedback">
+            <label for="email_personal_a" class="control-label">Correo Personal</label>
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="email" name="email_personal_a" id="email_personal_a" class="form-control" placeholder="Ej. usuario@gmail.com"  required>
+            </div> 
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+          <div class="help-block with-errors"></div>  
+        </div>
+
+       
+
+    <button name="btn_enviar" type="submit" class="btn btn-info">
+      <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Registrar Información
+  </button>
+
+</div>
+</form>
+
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger btn-circle" data-dismiss="modal"><i class="fa fa-times"></i></button>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+function mostrarModal()
+  {
+    $('#modal').modal('show');
+}
+
+function EditarJefe(clave_area, nombre_empleado, direccion, departamento, descripcion, email, email_personal)
+{
+
+    document.frmModificarEmpleado.clave_area_a.value = clave_area;
+    document.frmModificarEmpleado.nombre_completo_a.value = nombre_empleado;
+    document.frmModificarEmpleado.direccion_a.value = direccion;
+    document.frmModificarEmpleado.departamento_adsc_a.value = departamento;
+    document.frmModificarEmpleado.cargo_empleado_a.value = descripcion;
+    document.frmModificarEmpleado.email_a.value = email;
+    document.frmModificarEmpleado.email_personal_a.value = email_personal;
+    $('#modalActualizar').modal('show');
+}
+
+function confirma(){
+    if (confirm("¿Realmente desea eliminarlo?")){ 
+    }
+    else { 
+      return false
+  }
+}
+
+</script>

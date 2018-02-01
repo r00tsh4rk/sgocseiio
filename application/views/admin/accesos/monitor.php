@@ -10,7 +10,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SGOCSEIIO</a>
+                <a class="navbar-brand" href="<?php echo base_url(); ?>Admin/PanelAdmin">SGOCSEIIO</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -114,7 +114,7 @@
                 <div align="right" class="row">
                    <div class="col-lg-12">
                      <button type="button" onclick="mostrarModal();"  class="btn btn-success" >
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span> 
                         <strong>Imprimir Reporte de Acceso</strong>
                     </button>
                 </div>
@@ -164,3 +164,51 @@
 
 </div>
     <!-- /#wrapper -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 align="center" class="modal-title">Imprimir Reporte</h4>
+        </div>
+        <form data-toggle="validator" enctype="multipart/form-data" role="form" method="POST" name="frmRegistroOficio" action="<?php echo base_url(); ?>Admin/Accesos/Monitor/reporteAllAccesos">
+            <div class="col-lg-12">
+              <br>
+
+              <div class="form-group">
+                <label for="fecha_inicio" class="col-lg-2 control-label">Fecha de Inicio:</label>
+                
+                <input type="date" class="form-control" id="date_inicio" name="date_inicio"  value="<?php echo date('Y-m-d') ?>"/>
+
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_fin" class="col-lg-2 control-label">Fecha de Fin:</label>
+
+                <input type="date" class="form-control" id="date_final" name="date_final" value="<?php echo date('Y-m-d') ?>"/>
+
+            </div>
+
+
+            <button name="btn_enviar" type="submit" class="btn btn-info">
+              <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Registrar Información
+          </button>
+
+      </div>
+  </form>
+
+
+  <div class="modal-footer">
+      <button type="button" class="btn btn-danger btn-circle" data-dismiss="modal"><i class="fa fa-times"></i></button>
+  </div>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+   function mostrarModal()
+  {
+    $('#modal').modal('show');
+}
+</script>
