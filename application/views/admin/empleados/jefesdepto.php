@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Inicio <small> Gestión de Empleados</small>
+                        Jefes de Departamento <small> Gestión de Empleados</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li class="active">

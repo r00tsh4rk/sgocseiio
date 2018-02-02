@@ -331,6 +331,32 @@ class Modelo_recepcion extends CI_Model {
 		return $consulta -> result();
 	}
 
+//  OBTENER EL BUZON DE COPIAS POR ID 
+
+		public function getBuzonDeCopiasDirById($id_recepcion)
+	{
+		$this->db->select('*');
+		$this->db->select('turnado_copias_dir_externas.nombre_emisor as emisor_copia, turnado_copias_dir_externas.observaciones as ob ');
+		$this->db->from('direcciones');
+		$this->db->join('turnado_copias_dir_externas', 'direcciones.id_direccion= turnado_copias_dir_externas.id_direccion_destino');
+		$this->db->join('recepcion_oficios', 'turnado_copias_dir_externas.id_recepcion = recepcion_oficios.id_recepcion');
+		$this->db->where('turnado_copias_dir_externas.id_recepcion', $id_recepcion);
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
+	public function getBuzonDeCopiasDeptoById($id_recepcion)
+	{
+		$this->db->select('*');
+		$this->db->select('turnado_copias_depto_externa.nombre_emisor as emisor_copia, turnado_copias_depto_externa.observaciones as ob ');
+		$this->db->from('departamentos');
+		$this->db->join('turnado_copias_depto_externa', 'departamentos.id_area= turnado_copias_depto_externa.id_depto_destino');
+		$this->db->join('recepcion_oficios', 'turnado_copias_depto_externa.id_recepcion = recepcion_oficios.id_recepcion');
+		$this->db->where('turnado_copias_depto_externa.id_recepcion', $id_recepcion);
+		$consulta = $this->db->get();
+		return $consulta -> result();
+	}
+
 	// OFICIOS DE SALIDA
 	
 

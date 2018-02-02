@@ -234,15 +234,17 @@
                     <th>Funcionario que emite</th>
                     <th>Cargo</th>
                     <th>Dependencia</th>
-                    <th>Asignado a: </th>
+                    <th>Dirección asignada a responder</th>
+                    <th>Departamento asignado a responder</th>
                     <th>Fecha de Termino</th>
                     <th>Archivo</th>
                     <th>Observaciones</th>
                     <th>Días Restantes</th>
                     <th>Editar</th>
                     <th>C.c.p Direcciones</th>
-                    <th>C.c.p Departamentos</th>
-                    
+                    <th>Direcciones con copias turnadas</th>
+                    <th>C.c.p Departamentos</th>  
+                    <th>Departamentos con copias turnadas</th> 
                 </tr>
             </thead >
             <tbody style="font-size:smaller; font-weight: bold ;">
@@ -262,6 +264,21 @@
                         <td><?php echo $row->cargo; ?></td>
                         <td><?php echo $row->dependencia_emite; ?></td>
                         <td><?php echo $row->nombre_direccion; ?></td>
+                        <td>
+                            <?php if ($row->flag_deptos == 1) {
+
+                                $this -> load -> model('Modelo_direccion');
+                                $nombre_depto = $this -> Modelo_direccion -> getAsignacionById($row->id_recepcion);
+                                foreach ($nombre_depto as $nombre) {
+                                    echo "Oficio asignado al ".$nombre->nombre_area;
+                                }
+
+                            } 
+                            else if ($row->flag_deptos == 0) {
+                                echo "Sin asignación a departamentos";
+                            }
+                            ?>
+                        </td> 
                         <td><?php echo $row->fecha_termino; ?></td>
                         <td>
                             <a href="<?php echo base_url()?>RecepcionGral/Entradas/Recepcion/Descargar/<?php echo $row->archivo_oficio; ?>">
@@ -495,11 +512,37 @@
          </button>
      </td>
      <td>
+        <?php 
+
+            $this -> load -> model('Modelo_recepcion');
+            $nombre_depto = $this -> Modelo_recepcion -> getBuzonDeCopiasDirById($row->id_recepcion);
+            foreach ($nombre_depto as $nombre) {
+            
+                    echo $nombre->nombre_direccion."\n\n";
+                
+            }
+
+        ?>
+    </td> 
+   <!--  <td>Oficio turnado a X dirección</td> -->
+     <td>
         <button type="button" onclick="mostrarTurnadoDepartamentos('<?php echo $row->id_recepcion; ?>','<?php echo $row->direccion_destino; ?>','<?php echo $row->num_oficio; ?>');" class="form-control btn btn-primary btn-sm">
          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> C.c.p Deptos  
      </button>
  </td>
+<td>
+        <?php 
 
+            $this -> load -> model('Modelo_recepcion');
+            $nombre_depto = $this -> Modelo_recepcion -> getBuzonDeCopiasDeptoById($row->id_recepcion);
+            foreach ($nombre_depto as $nombre) {
+            
+                    echo $nombre->nombre_area."\n\n";
+                
+            }
+
+        ?>
+    </td>
 
 </tr>
 <?php } ?>

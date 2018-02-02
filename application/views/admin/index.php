@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="<?php echo base_url(); ?>Admin/Empleados/PanelEmpleados">
                                 <div class="panel-footer">
                                     <span class="pull-left">Ver mas Información</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="<?php echo base_url(); ?>Admin/Usuarios/GestUsuarios">
                                 <div class="panel-footer">
                                     <span class="pull-left">Más Información</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="<?php echo base_url(); ?>Admin/Accesos/Monitor">
                                 <div class="panel-footer">
                                     <span class="pull-left">Más Información</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="<?php echo base_url(); ?>Admin/Oficios/Externos/PanelOfExternos">
                                 <div class="panel-footer">
                                     <span class="pull-left">Más Información</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -180,7 +180,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="<?php echo base_url(); ?>Admin/Oficios/Internos/PanelOfInternos">
                                 <div class="panel-footer">
                                     <span class="pull-left">Más Información</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
